@@ -1,6 +1,5 @@
 node_modules/
 .DS_Store
-.vscode/
 /apps/**/node_modules/
 /apps/**/dist/
 /packages/**/node_modules/
