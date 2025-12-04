@@ -225,11 +225,102 @@ const interestsForSearch = interests.map(interest => ({
 
   const initializeApp = () => {
     initializeSearch();
-    // setupEventListeners is called separately below
+    // Apply filters from URL after interests are loaded
+    applyFiltersFromUrl();
+  };
+
+  // URL state management
+  const getUrlParams = () => {
+    const params = new URLSearchParams(window.location.search);
+    return {
+      search: params.get('search') || '',
+      type: params.get('type') || 'all',
+      tags: params.get('tags') ? params.get('tags').split(',') : [],
+      status: params.get('status') || 'all'
+    };
+  };
+
+  const updateUrlParams = (search, type, tags, status) => {
+    const params = new URLSearchParams();
+    
+    if (search) {
+      params.set('search', search);
+    }
+    
+    if (type && type !== 'all') {
+      params.set('type', type);
+    }
+    
+    if (tags && tags.length > 0) {
+      params.set('tags', tags.join(','));
+    }
+    
+    if (status && status !== 'all') {
+      params.set('status', status);
+    }
+    
+    const newUrl = params.toString() 
+      ? `${window.location.pathname}?${params.toString()}`
+      : window.location.pathname;
+    
+    window.history.pushState({}, '', newUrl);
+  };
+
+  const applyFiltersFromUrl = () => {
+    const urlParams = getUrlParams();
+    
+    // Set search input
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+      searchInput.value = urlParams.search || '';
+    }
+    
+    // Set type select
+    const typeSelect = document.getElementById('type-filter');
+    if (typeSelect) {
+      typeSelect.value = urlParams.type || 'all';
+    }
+    
+    // Set tag checkboxes
+    const tagCheckboxes = document.querySelectorAll('.filter-bar__tag-checkbox[data-filter="tag"]');
+    if (urlParams.tags.length > 0) {
+      // Uncheck all first, then check only the ones from URL
+      tagCheckboxes.forEach(checkbox => {
+        checkbox.checked = urlParams.tags.includes(checkbox.dataset.value);
+      });
+    } else {
+      // If no tags in URL, check all by default
+      tagCheckboxes.forEach(checkbox => {
+        checkbox.checked = true;
+      });
+    }
+    
+    // Set status button
+    const statusButtons = document.querySelectorAll('.filter-bar__button[data-filter="status"]');
+    statusButtons.forEach(button => {
+      button.classList.remove('filter-bar__button--active');
+      if (button.dataset.value === (urlParams.status || 'all')) {
+        button.classList.add('filter-bar__button--active');
+      }
+    });
+    // If no button was activated (shouldn't happen, but just in case), activate "all"
+    const activeStatusButton = document.querySelector('.filter-bar__button[data-filter="status"].filter-bar__button--active');
+    if (!activeStatusButton) {
+      const allButton = document.querySelector('.filter-bar__button[data-filter="status"][data-value="all"]');
+      if (allButton) {
+        allButton.classList.add('filter-bar__button--active');
+      }
+    }
+    
+    // Apply filters without updating URL (we're reading from URL)
+    // Only apply if allInterests is already populated
+    if (allInterests.length > 0) {
+      applyFilters(false);
+    }
   };
 
   // Filter and search logic
-  const applyFilters = () => {
+  const applyFilters = (updateUrl = true) => {
     const searchInput = document.getElementById('search-input');
     const searchQuery = searchInput?.value.trim() || '';
     
@@ -248,6 +339,11 @@ const interestsForSearch = interests.map(interest => ({
     // Get selected type filter
     const typeSelect = document.getElementById('type-filter');
     const selectedType = typeSelect?.value || 'all';
+    
+    // Update URL if requested
+    if (updateUrl) {
+      updateUrlParams(searchQuery, selectedType, selectedTags, selectedStatus);
+    }
     
     // Apply search
     let filteredInterests = allInterests;
@@ -304,7 +400,14 @@ const interestsForSearch = interests.map(interest => ({
     // Search input
     const searchInput = document.getElementById('search-input');
     if (searchInput) {
-      searchInput.addEventListener('input', applyFilters);
+      // Use debounce for search to avoid too many URL updates
+      let searchTimeout;
+      searchInput.addEventListener('input', () => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+          applyFilters();
+        }, 300);
+      });
     }
     
     // Status filter buttons
@@ -341,6 +444,11 @@ const interestsForSearch = interests.map(interest => ({
     if (typeSelect) {
       typeSelect.addEventListener('change', applyFilters);
     }
+    
+    // Handle browser back/forward buttons
+    window.addEventListener('popstate', () => {
+      applyFiltersFromUrl();
+    });
     
     // Preview click handlers (clicking the card or button opens dialog)
     const previews = document.querySelectorAll('.interest-preview');

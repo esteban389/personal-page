@@ -10,7 +10,8 @@ type InterestType = 'book'
  | 'course'
  | 'certification'
  | 'video'
- | 'idea';
+ | 'idea'
+ | "blog-post";
 
  type AdditionalUrl = {
     url: string;

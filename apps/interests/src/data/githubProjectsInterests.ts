@@ -7,7 +7,7 @@ export const githubProjectsInterests: Interest[] = [
         description: "D2TS is a TypeScript implementation of differential dataflow - a powerful data-parallel programming framework that enables incremental computations over changing input data. \nYou can use D2TS to build data pipelines that can be executed incrementally, meaning you can process data as it comes in, and only recompute the parts that have changed.This could be as simple as remapping data, or as complex as performing a full join combining two datasources where one is a computed aggregate.\nD2TS can be used in conjunction with ElectricSQL to build data pipelines on top of ShapeStreams that can be executed incrementally.\nA D2TS pipeline is also fully type safe, inferring the types at each step of the pipeline, and supports auto- complete in your IDE.",
         type: "project",
         image: "https://raw.githubusercontent.com/electric-sql/meta/main/identity/ElectricSQL-logo-next.svg",
-        tags: ["typescript", "dataflow", "data-parallel", "incremental-computation", "electric-sql", "data"],
+        tags: ["typescript", "dataflow", "data-parallel", "incremental-computation", "electric-sql", "data", "open-source"],
         link: "https://github.com/electric-sql/d2ts",
         isCurrent: false,
     },
@@ -17,7 +17,7 @@ export const githubProjectsInterests: Interest[] = [
         description: "Create PowerPoint presentations with React",
         type: "project",
         link: "https://github.com/wyozi/react-pptx?tab=readme-ov-file",
-        tags: ["react", "pptx", "presentation", "typescript", "javascript", "frontend"],
+        tags: ["react", "pptx", "presentation", "typescript", "javascript", "frontend", "open-source"],
         isCurrent: false,
     },
     {
@@ -26,7 +26,16 @@ export const githubProjectsInterests: Interest[] = [
         description: "A React component for displaying documents. It supports various document formats and provides a flexible API for customization.",
         type: "project",
         link: "https://github.com/cyntler/react-doc-viewer",
-        tags: ["react", "document", "viewer", "typescript", "javascript", "frontend"],
+        tags: ["react", "document", "viewer", "typescript", "javascript", "frontend", "open-source"],
+        isCurrent: false,
+    },
+    {
+        id: "g4",
+        name: "retraced",
+        link: "https://github.com/retracedhq/retraced",
+        description: "A fully open source audit logs service and embeddable UI easily deployed to your own Kubernetes cluster. Brought to you by replicated.com and boxyhq.com 🚀 \nRetraced is the easiest way to integrate a compliant audit log into your application. It provides a searchable, exportable record of read/write events. Client libraries are available for Go and Javascript.",
+        type: "project",
+        tags: ["go", "javascript", "typescript", "audit", "logs", "kubernetes", "backend", "open-source"],
         isCurrent: false,
     }
 ]
