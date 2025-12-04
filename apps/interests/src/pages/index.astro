@@ -1,16 +1,390 @@
 ---
+import { interests } from '../data/interests';
+import InterestPreview from '../components/InterestPreview.astro';
+import InterestDialog from '../components/InterestDialog.astro';
+import FilterBar from '../components/FilterBar.astro';
+import SearchBar from '../components/SearchBar.astro';
+import '../styles/global.css';
 
+// Extract all unique tags
+const allTags = interests
+  .flatMap(interest => interest.tags || [])
+  .filter((tag, index, self) => self.indexOf(tag) === index);
+
+// Extract all unique types
+const allTypes = interests
+  .map(interest => interest.type)
+  .filter((type, index, self) => self.indexOf(type) === index)
+  .sort();
+
+// Prepare data for Fuse.js (flatten additionalUrls descriptions)
+const interestsForSearch = interests.map(interest => ({
+  ...interest,
+  additionalUrlsDescriptions: (interest.additionalUrls || [])
+    .map(url => url.description)
+    .join(' ')
+}));
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Interests</title>
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.1.0/dist/fuse.min.js" defer></script>
+  </head>
+  <body>
+    <main class="main-container">
+      <header class="page-header">
+        <div class="page-header__content">
+          <h1 class="page-title">My Interests</h1>
+          <p class="page-subtitle">Exploring ideas, learning continuously.</p>
+        </div>
+      </header>
+
+      <div class="controls">
+        <FilterBar allTags={allTags} allTypes={allTypes} />
+        <SearchBar />
+      </div>
+
+      <div class="interests-grid" id="interests-grid">
+        {interests.map((interest) => (
+          <InterestPreview interest={interest} />
+        ))}
+      </div>
+
+      <div class="dialogs">
+        {interests.map((interest) => (
+          <InterestDialog interest={interest} />
+        ))}
+      </div>
+
+      <script id="interests-data" type="application/json" set:html={JSON.stringify(interestsForSearch)}></script>
+    </main>
+  </body>
 </html>
+
+<style>
+  .main-container {
+    margin: 0 auto;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .page-header {
+    position: relative;
+    background: linear-gradient(180deg, var(--color-gradient-start) 0%, var(--color-gradient-mid) 50%, var(--color-gradient-end) 100%);
+    padding: var(--spacing-3xl) var(--spacing-md) var(--spacing-2xl);
+    text-align: center;
+    overflow: hidden;
+    min-height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .page-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+      radial-gradient(circle at 20% 30%, rgba(255, 182, 193, 0.3) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255, 218, 185, 0.3) 0%, transparent 50%),
+      radial-gradient(circle at 40% 70%, rgba(173, 216, 230, 0.2) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .page-header__content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .page-title {
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    line-height: var(--line-height-tight);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .page-subtitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-muted);
+    font-weight: var(--font-weight-normal);
+    line-height: var(--line-height-normal);
+  }
+
+  .controls {
+    background: var(--color-background);
+    padding: var(--spacing-xl) var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+
+  .interests-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-xl) var(--spacing-md);
+    background: var(--color-surface);
+  }
+
+  @media (min-width: 640px) {
+    .interests-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .page-header {
+      padding: var(--spacing-3xl) var(--spacing-xl) var(--spacing-2xl);
+      min-height: 320px;
+    }
+
+    .page-title {
+      font-size: 3.5rem;
+    }
+
+    .controls {
+      padding: var(--spacing-xl);
+    }
+
+    .interests-grid {
+      grid-template-columns: repeat(3, 1fr);
+      padding: var(--spacing-xl);
+    }
+  }
+</style>
+
+<script>
+  // @ts-nocheck
+  // Wait for Fuse.js to be available from CDN
+  const waitForFuse = () => {
+    if (typeof Fuse !== 'undefined') {
+      initializeApp();
+    } else {
+      setTimeout(waitForFuse, 50);
+    }
+  };
+
+  // Get interests data from embedded JSON
+  const getInterestsData = () => {
+    const dataScript = document.getElementById('interests-data');
+    if (!dataScript?.textContent) return [];
+    return JSON.parse(dataScript.textContent);
+  };
+
+  // Map interests data to DOM elements
+  const mapInterestsToDOM = (interestsData) => {
+    return interestsData.map(interest => {
+      const preview = document.querySelector(`.interest-preview[data-interest-id="${interest.id}"]`);
+      const dialog = document.getElementById(`dialog-${interest.id}`);
+      
+      return {
+        ...interest,
+        element: preview,
+        dialog
+      };
+    });
+  };
+
+  // Set up Fuse.js
+  const fuseOptions = {
+    keys: [
+      { name: 'name', weight: 0.5 },
+      { name: 'description', weight: 0.3 },
+      { name: 'additionalUrlsDescriptions', weight: 0.2 }
+    ],
+    threshold: 0.4,
+    includeScore: true
+  };
+
+  let allInterests = [];
+  let fuse = null;
+
+  const initializeSearch = () => {
+    if (typeof Fuse === 'undefined') return;
+    
+    const interestsData = getInterestsData();
+    allInterests = mapInterestsToDOM(interestsData);
+    
+    // Prepare data for Fuse.js
+    const searchData = allInterests.map(interest => ({
+      ...interest,
+      additionalUrlsDescriptions: (interest.additionalUrls || [])
+        .map(url => url.description || '')
+        .join(' ')
+    }));
+    
+    fuse = new Fuse(searchData, fuseOptions);
+  };
+
+  const initializeApp = () => {
+    initializeSearch();
+    // setupEventListeners is called separately below
+  };
+
+  // Filter and search logic
+  const applyFilters = () => {
+    const searchInput = document.getElementById('search-input');
+    const searchQuery = searchInput?.value.trim() || '';
+    
+    // Get selected status filter (button-based)
+    const statusButton = document.querySelector(
+      '.filter-bar__button[data-filter="status"].filter-bar__button--active'
+    );
+    const selectedStatus = statusButton?.dataset.value || 'all';
+    
+    // Get selected tag filters (checkbox-based)
+    const tagCheckboxes = document.querySelectorAll(
+      '.filter-bar__tag-checkbox[data-filter="tag"]:checked'
+    );
+    const selectedTags = Array.from(tagCheckboxes).map(cb => cb.dataset.value || '');
+    
+    // Get selected type filter
+    const typeSelect = document.getElementById('type-filter');
+    const selectedType = typeSelect?.value || 'all';
+    
+    // Apply search
+    let filteredInterests = allInterests;
+    if (searchQuery && fuse && typeof Fuse !== 'undefined') {
+      const searchResults = fuse.search(searchQuery);
+      filteredInterests = searchResults.map(result => result.item);
+    } else if (searchQuery && !fuse) {
+      // If Fuse isn't loaded yet, do a simple text search
+      const query = searchQuery.toLowerCase();
+      filteredInterests = allInterests.filter(interest => {
+        const nameMatch = interest.name?.toLowerCase().includes(query);
+        const descMatch = interest.description?.toLowerCase().includes(query);
+        const urlMatch = (interest.additionalUrls || []).some(url => 
+          url.description?.toLowerCase().includes(query)
+        );
+        return nameMatch || descMatch || urlMatch;
+      });
+    }
+    
+    // Apply status filter
+    if (selectedStatus === 'current') {
+      filteredInterests = filteredInterests.filter(interest => interest.isCurrent === true);
+    } else if (selectedStatus === 'past') {
+      filteredInterests = filteredInterests.filter(interest => interest.isCurrent !== true);
+    }
+    // 'all' shows everything, so no filtering needed
+    
+    // Apply type filter
+    if (selectedType !== 'all') {
+      filteredInterests = filteredInterests.filter(interest => interest.type === selectedType);
+    }
+    
+    // Apply tag filter (OR within tags, AND with other filters)
+    // If no tags are selected, show all. If tags are selected, show items with at least one selected tag
+    if (selectedTags.length > 0) {
+      filteredInterests = filteredInterests.filter(interest => {
+        const interestTags = interest.tags || [];
+        return selectedTags.some(tag => interestTags.includes(tag));
+      });
+    }
+    // If no tags selected, show all (no filtering)
+    
+    // Show/hide interests
+    allInterests.forEach(interest => {
+      const isVisible = filteredInterests.some(fi => fi.id === interest.id);
+      if (interest.element) {
+        interest.element.style.display = isVisible ? '' : 'none';
+      }
+    });
+  };
+
+  // Set up event listeners
+  const setupEventListeners = () => {
+    // Search input
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+      searchInput.addEventListener('input', applyFilters);
+    }
+    
+    // Status filter buttons
+    const statusButtons = document.querySelectorAll('.filter-bar__button[data-filter="status"]');
+    statusButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Remove active class from all status buttons
+        statusButtons.forEach(btn => btn.classList.remove('filter-bar__button--active'));
+        // Add active class to clicked button
+        button.classList.add('filter-bar__button--active');
+        applyFilters();
+      });
+    });
+    
+    // Tag filter checkboxes
+    const tagCheckboxes = document.querySelectorAll('.filter-bar__tag-checkbox[data-filter="tag"]');
+    tagCheckboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', applyFilters);
+    });
+    
+    // "All" tags button - selects all tag checkboxes
+    const allTagsButton = document.querySelector('.filter-bar__all-tags-button');
+    if (allTagsButton) {
+      allTagsButton.addEventListener('click', () => {
+        tagCheckboxes.forEach(checkbox => {
+          checkbox.checked = true;
+        });
+        applyFilters();
+      });
+    }
+    
+    // Type filter select
+    const typeSelect = document.getElementById('type-filter');
+    if (typeSelect) {
+      typeSelect.addEventListener('change', applyFilters);
+    }
+    
+    // Preview click handlers (clicking the card or button opens dialog)
+    const previews = document.querySelectorAll('.interest-preview');
+    previews.forEach(preview => {
+      const button = preview.querySelector('.interest-preview__button');
+      const handleClick = (e) => {
+        // Don't open dialog if clicking the button itself (button click will be handled separately)
+        if (e.target.closest('.interest-preview__button')) return;
+        
+        const id = preview.getAttribute('data-interest-id');
+        if (id) {
+          const dialog = document.getElementById(`dialog-${id}`);
+          if (dialog && dialog.showModal) {
+            dialog.showModal();
+          }
+        }
+      };
+      
+      preview.addEventListener('click', handleClick);
+      
+      // Also handle button click
+      if (button) {
+        button.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = preview.getAttribute('data-interest-id');
+          if (id) {
+            const dialog = document.getElementById(`dialog-${id}`);
+            if (dialog && dialog.showModal) {
+              dialog.showModal();
+            }
+          }
+        });
+      }
+    });
+  };
+
+  // Set up event listeners immediately (don't wait for Fuse)
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      setupEventListeners();
+      waitForFuse();
+    });
+  } else {
+    setupEventListeners();
+    waitForFuse();
+  }
+</script>

@@ -1,0 +1,63 @@
+import type { Interest } from "./interests";
+
+export const booksInterests: Interest[] = [
+    {
+        id: '1',
+        name: 'The Hard Thing About Hard Things: Building a Busienss When There Are No Easy Answers',
+        description: 'A book by Ben Horowitz about building and running a successful business.',
+        type: 'book',
+        image: 'https://i5.walmartimages.com/asr/8377b33c-ae64-4245-8c0c-8e40f6084229.383367138ed9c350cca6f6f602832c6b.jpeg?odnHeight=768&odnWidth=768&odnBg=FFFFFF',
+        link: 'https://www.amazon.com/Hard-Thing-About-Things-Building/dp/0062273205',
+        tags: ['business', 'entrepreneurship', "startup"],
+        isCurrent: false,
+    },
+    {
+        id: "3",
+        name: "The Startup Checklist: 25 Steps to a Scalable, High-Growth Business",
+        type: "book",
+        tags: ["business", "entrepreneurship", "startup"],
+        image: "https://m.media-amazon.com/images/I/71x-gVKFW-L._SY522_.jpg",
+        link: "https://www.amazon.com/Startup-Checklist-Scalable-High-Growth-Business/dp/111916379X",
+        description: "A book by David S. Rose about building and running a successful business.",
+        isCurrent: false,
+      },
+      {
+        id: "2",
+        name: "Who: The A Method for Hiring",
+        type: "book",
+        description: "A book by Geoff Smart and Randy Street about how to hire the best people for your company.",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUAeQvLBJN0IVPok6q0GLS0cszptYyO3f0Mn1kMfWzTzvqpvlS-sZqMT1O0sPtRrbf6VN-yok4C1mpQGdoWz9XSq6Xd1JOy9cxB79EdA&s=10",
+        tags: ["hiring", "management", "startup"],
+        isCurrent: false,
+      },
+      {
+        id: "4",
+        name: "The Mom Test: How to Talk to Customers & Learn If Your Business is a Good Idea When Everyone is Lying to You",
+        type: "book",
+        description: "A book by Rob Fitzpatrick about how to talk to customers and learn if your business is a good idea when everyone is lying to you.",
+        image: "https://m.media-amazon.com/images/I/412SJjRGTVL.jpg",
+        tags: ["business", "entrepreneurship", "startup"],
+        link: "https://www.amazon.com/-/es/El-Mom-Test-mantener-conversaciones/dp/1671455355",
+        isCurrent: false,
+      },
+      {
+        id: "5",
+        name: "The Challenger Sale: Taking Control of the Customer Conversation",
+        type: "book",
+        description: "A book by Brent Adamson and Matthew Dixon about how to sell to customers.",
+        image: "https://m.media-amazon.com/images/I/61k3jZtOX8L._SY522_.jpg",
+        tags: ["sales", "business", "entrepreneurship", "startup"],
+        link: "https://www.amazon.com/-/es/Challenger-Sale-Control-Customer-Conversation/dp/1591844355",
+        isCurrent: false,
+      },
+      {
+        id: "6",
+        name: "Zero to One: Notes on Startups, Or How to Build the Future",
+        type: "book",
+        description: "A book by Peter Thiel and Blake Masters about how to build a successful startup.",
+        image: "https://m.media-amazon.com/images/I/51zGCdRQXOL._SY522_.jpg",
+        tags: ["business", "entrepreneurship", "startup"],
+        link: "https://www.amazon.com/-/es/Zero-One-Notes-Startups-Future/dp/0804139296",
+        isCurrent: false,
+      }
+]
