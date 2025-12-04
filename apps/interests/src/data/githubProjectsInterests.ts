@@ -74,5 +74,21 @@ export const githubProjectsInterests: Interest[] = [
         tags: ["java", "medical", "record", "system", "open-source", "typescript"],
         image: "https://camo.githubusercontent.com/91f41be1884bb1f3a868de90a4c2a7057ca165570e46c770ec8213676754e1df/68747470733a2f2f74616c6b2e6f70656e6d72732e6f72672f75706c6f6164732f64656661756c742f6f726967696e616c2f32582f662f663165633537396230333938636230346338306135346335366461323139623234343066653234392e6a7067",
         isCurrent: false,
+    },
+    {
+        id: "g9",
+        name: "react-module-federation",
+        description: "This document describes a proof of concept project for microfrontends using Vite and module federation. It is based on React, and implemented in TypeScript. It is possible to achieve similar results using other frameworks, or vanilla js and import maps, but the focus here is on React and Vite.",
+        type: "project",
+        link: "https://github.com/krzysztofradomski/react-module-federation",
+        tags: ["react", "module-federation", "microfrontend", "vite", "typescript", "open-source"],
+    },
+    {
+        id: "g10",
+        name: "Next.js WordPress-like Plugin System",
+        type: "project",
+        description: "This is a proof of concept project for a WordPress-like plugin system using Next.js. It is based on React, and implemented in TypeScript. It is possible to achieve similar results using other frameworks, or vanilla js and import maps, but the focus here is on React and Next.js.",
+        link: "https://github.com/gluestack/next-wordpress-plugins",
+        tags: ["next.js", "wordpress", "plugin", "system", "typescript", "open-source"],
     }
 ]

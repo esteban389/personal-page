@@ -1,5 +1,7 @@
+import { blogpostInterests } from "./blogpostInterests";
 import { booksInterests } from "./booksInterests";
 import { githubProjectsInterests } from "./githubProjectsInterests";
+import { platformsInterests } from "./platformsInterests";
 
 type InterestType = 'book'
  //| 'movie' 
@@ -11,7 +13,8 @@ type InterestType = 'book'
  //| 'certification'
  //| 'video'
  //| 'idea'
- | "blog-post";
+ | "blog-post"
+ | "platform";
 
  type AdditionalUrl = {
     url: string;
@@ -35,11 +38,14 @@ const defaultImages: Record<InterestType, string> = {
   podcast: "https://t3.ftcdn.net/jpg/05/10/75/30/360_F_510753092_f4AOmCJAczuGgRLCmHxmowga2tC9VYQP.jpg",
   project: "https://cdn.pixabay.com/photo/2022/01/30/13/33/github-6980894_1280.png",
   "blog-post": "https://plus.unsplash.com/premium_photo-1720744786849-a7412d24ffbf?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YmxvZ3xlbnwwfHwwfHx8MA%3D%3D",
+  platform: "https://images.unsplash.com/photo-1542744095-291d1f67b221?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8d2VifGVufDB8fDB8fHww"
 }
 
 const allInterests: Interest[] = [
+  ...platformsInterests,
   ...booksInterests,
   ...githubProjectsInterests,
+  ...blogpostInterests,
 ]
 
 // Apply default images to interests that don't have one

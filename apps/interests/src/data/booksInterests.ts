@@ -59,5 +59,25 @@ export const booksInterests: Interest[] = [
         tags: ["business", "entrepreneurship", "startup"],
         link: "https://www.amazon.com/-/es/Zero-One-Notes-Startups-Future/dp/0804139296",
         isCurrent: false,
+      },
+      {
+        id: "7",
+        name: "The Lean Startup: How Constant Innovation Creates Radically Successful Businesses",
+        type: "book",
+        description: "A book by Eric Ries about how to build a successful startup.",
+        image: "https://m.media-amazon.com/images/G/01/apparel/rcxgs/tile._CB483369110_.gif",
+        tags: ["business", "entrepreneurship", "startup"],
+        link: "https://www.amazon.com/-/es/Lean-Startup-Entrepreneurs-Continuous-Innovation/dp/0307887898",
+        isCurrent: false,
+      },
+      {
+        id: "8",
+        name: "Crossing the Chasm",
+        type: "book",
+        description: "A book by Geoffrey A. Moore about how to cross the chasm and bring a product to market.",
+        image: "https://m.media-amazon.com/images/I/81jRhPA6SQL._SY522_.jpg",
+        tags: ["business", "entrepreneurship", "startup"],
+        link: "https://www.amazon.com/Crossing-Chasm-3rd-Disruptive-Mainstream/dp/0062292986",
+        isCurrent: false,
       }
 ]
