@@ -3,10 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
+  "bin": {
+    "starred-github-projects": "./scripts/getGithubStarredProjects.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "interests:build": "env $(cat .env | xargs) pnpm --filter @esteban/interests build",
-    "interests:dev": "env $(cat .env | xargs) pnpm --filter @esteban/interests dev"
+    "interests:dev": "env $(cat .env | xargs) pnpm --filter @esteban/interests dev",
+    "starred-github-projects": "npx starred-github-projects"
   },
   "keywords": [],
   "author": "",
