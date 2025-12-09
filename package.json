@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:interests": "pnpm --filter @esteban/interests build",
-    "dev:interests": "pnpm --filter @esteban/interests dev"
+    "interests:build": "env $(cat .env | xargs) pnpm --filter @esteban/interests build",
+    "interests:dev": "env $(cat .env | xargs) pnpm --filter @esteban/interests dev"
   },
   "keywords": [],
   "author": "",
