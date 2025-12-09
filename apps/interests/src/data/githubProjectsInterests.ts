@@ -343,7 +343,8 @@ const baseGithubProjectsInterests: Omit<Interest, "type">[] = [
         description: "The core modules of the OpenMRS 3.0 Frontend system",
         image: "https://avatars.githubusercontent.com/u/860776?v=4",
         link: "https://github.com/openmrs/openmrs-esm-core",
-        tags: ["TypeScript"],
+        tags: ["TypeScript", "frontend"],
+        isCurrent: true,
     },
     {
         id: "g54298946-h4cbod",
@@ -2189,7 +2190,8 @@ const baseGithubProjectsInterests: Omit<Interest, "type">[] = [
         description: "OpenMRS API and web application code",
         image: "https://avatars.githubusercontent.com/u/860776?v=4",
         link: "https://github.com/openmrs/openmrs-core",
-        tags: ["ehr", "emr", "health", "healthcare", "hospital", "java", "medical-records", "openmrs", "openmrs-community", "Java"],
+        tags: ["ehr", "emr", "health", "healthcare", "hospital", "java", "medical-records", "openmrs", "openmrs-community", "Java", "frontend"],
+        isCurrent: true,
     },
     {
         id: "g79552778-irscsr",

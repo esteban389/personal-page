@@ -6,10 +6,18 @@ import FilterBar from '../components/FilterBar.astro';
 import SearchBar from '../components/SearchBar.astro';
 import '../styles/global.css';
 
-// Extract all unique tags
-const allTags = interests
-  .flatMap(interest => interest.tags || [])
-  .filter((tag, index, self) => self.indexOf(tag) === index);
+// Extract all unique tags (case-insensitive deduplication)
+// Keep the first occurrence of each tag (case-insensitive)
+const tagMap = new Map();
+interests.forEach(interest => {
+  (interest.tags || []).forEach(tag => {
+    const normalized = tag.toLowerCase().trim();
+    if (!tagMap.has(normalized)) {
+      tagMap.set(normalized, tag); // Store original case
+    }
+  });
+});
+const allTags = Array.from(tagMap.values());
 
 // Extract all unique types
 const allTypes = interests
@@ -229,13 +237,16 @@ const interestsForSearch = interests.map(interest => ({
     applyFiltersFromUrl();
   };
 
+  // Helper function to normalize tags for case-insensitive comparison
+  const normalizeTag = (tag) => (tag || '').toLowerCase().trim();
+  
   // URL state management
   const getUrlParams = () => {
     const params = new URLSearchParams(window.location.search);
     return {
       search: params.get('search') || '',
       type: params.get('type') || 'all',
-      tags: params.get('tags') ? params.get('tags').split(',') : [],
+      tags: params.get('tags') ? params.get('tags').split(',').map(normalizeTag) : [],
       status: params.get('status') || 'all'
     };
   };
@@ -284,9 +295,10 @@ const interestsForSearch = interests.map(interest => ({
     // Set tag checkboxes
     const tagCheckboxes = document.querySelectorAll('.filter-bar__tag-checkbox[data-filter="tag"]');
     if (urlParams.tags.length > 0) {
-      // Uncheck all first, then check only the ones from URL
+      // Uncheck all first, then check only the ones from URL (case-insensitive)
       tagCheckboxes.forEach(checkbox => {
-        checkbox.checked = urlParams.tags.includes(checkbox.dataset.value);
+        const checkboxTag = normalizeTag(checkbox.dataset.value);
+        checkbox.checked = urlParams.tags.includes(checkboxTag);
       });
     } else {
       // If no tags in URL, check all by default
@@ -330,11 +342,11 @@ const interestsForSearch = interests.map(interest => ({
     );
     const selectedStatus = statusButton?.dataset.value || 'all';
     
-    // Get selected tag filters (checkbox-based)
+    // Get selected tag filters (checkbox-based) - normalize for case-insensitive comparison
     const tagCheckboxes = document.querySelectorAll(
       '.filter-bar__tag-checkbox[data-filter="tag"]:checked'
     );
-    const selectedTags = Array.from(tagCheckboxes).map(cb => cb.dataset.value || '');
+    const selectedTags = Array.from(tagCheckboxes).map(cb => normalizeTag(cb.dataset.value || ''));
     
     // Get selected type filter
     const typeSelect = document.getElementById('type-filter');
@@ -378,9 +390,10 @@ const interestsForSearch = interests.map(interest => ({
     
     // Apply tag filter (OR within tags, AND with other filters)
     // If no tags are selected, show all. If tags are selected, show items with at least one selected tag
+    // Comparison is case-insensitive
     if (selectedTags.length > 0) {
       filteredInterests = filteredInterests.filter(interest => {
-        const interestTags = interest.tags || [];
+        const interestTags = (interest.tags || []).map(normalizeTag);
         return selectedTags.some(tag => interestTags.includes(tag));
       });
     }
