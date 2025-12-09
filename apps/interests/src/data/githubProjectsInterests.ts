@@ -4818,6 +4818,31 @@ const baseGithubProjectsInterests: Omit<Interest, "type">[] = [
         link: "https://github.com/aditya-shri/VPN",
         tags: ["free", "free-vpn", "shadowsocks", "v2ray", "vpn", "vpn-server", "Shell"],
     }
+,
+    {
+        id: "g28942332-a054in",
+        name: "adempiere",
+        description: "ADempiere Business Suite ERP/CRM/MFG/SCM/POS done the Bazaar way in an open and unabated fashion. Focus is on the Community that includes Subject Matter Specialists, Implementors and End-Users.",
+        image: "https://avatars.githubusercontent.com/u/1263359?v=4",
+        link: "https://github.com/adempiere/adempiere",
+        tags: ["Java"],
+    },
+    {
+        id: "g28589709-mr93bg",
+        name: "sakai",
+        description: "Sakai is a freely available, feature-rich technology solution for learning, teaching, research and collaboration. Sakai is an open source software suite developed by a diverse and global adopter community.",
+        image: "https://avatars.githubusercontent.com/u/314726?v=4",
+        link: "https://github.com/sakaiproject/sakai",
+        tags: ["education", "hacktoberfest", "java", "lms", "sakai", "sakai-cle", "tomcat", "vle", "Java"],
+    },
+    {
+        id: "g50263561-c4b23m",
+        name: "moqui-framework",
+        description: "Use Moqui Framework to build enterprise applications based on Java. It includes tools for databases (relational, graph, document), local and web services, web and other UI with screens and forms, security, file/resource access, scripts, templates, l10n, caching, logging, search, rules, workflow, multi-instance, and integration.",
+        image: "https://avatars.githubusercontent.com/u/8334323?v=4",
+        link: "https://github.com/moqui/moqui-framework",
+        tags: ["application-framework", "crm", "database-access", "ecommerce", "entity", "erp", "framework", "freemarker", "groovy", "java", "moqui", "moqui-framework", "rest", "security", "server", "service", "web", "Groovy"],
+    }
 ]
 
 export const githubProjectsInterests: Interest[] = baseGithubProjectsInterests.map(interest => ({
