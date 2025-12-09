@@ -1,11 +1,10 @@
 import type { Interest } from "./interests";
 
-export const githubProjectsInterests: Interest[] = [
+const baseGithubProjectsInterests: Omit<Interest, "type">[] = [
     {
         id: "g1",
         name: "d2ts",
         description: "D2TS is a TypeScript implementation of differential dataflow - a powerful data-parallel programming framework that enables incremental computations over changing input data. \nYou can use D2TS to build data pipelines that can be executed incrementally, meaning you can process data as it comes in, and only recompute the parts that have changed.This could be as simple as remapping data, or as complex as performing a full join combining two datasources where one is a computed aggregate.\nD2TS can be used in conjunction with ElectricSQL to build data pipelines on top of ShapeStreams that can be executed incrementally.\nA D2TS pipeline is also fully type safe, inferring the types at each step of the pipeline, and supports auto- complete in your IDE.",
-        type: "project",
         image: "https://raw.githubusercontent.com/electric-sql/meta/main/identity/ElectricSQL-logo-next.svg",
         tags: ["typescript", "dataflow", "data-parallel", "incremental-computation", "electric-sql", "data", "open-source"],
         link: "https://github.com/electric-sql/d2ts",
@@ -15,7 +14,6 @@ export const githubProjectsInterests: Interest[] = [
         id: "g2",
         name: "",
         description: "Create PowerPoint presentations with React",
-        type: "project",
         link: "https://github.com/wyozi/react-pptx?tab=readme-ov-file",
         tags: ["react", "pptx", "presentation", "typescript", "javascript", "frontend", "open-source"],
         isCurrent: false,
@@ -24,7 +22,6 @@ export const githubProjectsInterests: Interest[] = [
         id: "g3",
         name: "react-doc-viewer",
         description: "A React component for displaying documents. It supports various document formats and provides a flexible API for customization.",
-        type: "project",
         link: "https://github.com/cyntler/react-doc-viewer",
         tags: ["react", "document", "viewer", "typescript", "javascript", "frontend", "open-source"],
         isCurrent: false,
@@ -34,13 +31,11 @@ export const githubProjectsInterests: Interest[] = [
         name: "retraced",
         link: "https://github.com/retracedhq/retraced",
         description: "A fully open source audit logs service and embeddable UI easily deployed to your own Kubernetes cluster. Brought to you by replicated.com and boxyhq.com 🚀 \nRetraced is the easiest way to integrate a compliant audit log into your application. It provides a searchable, exportable record of read/write events. Client libraries are available for Go and Javascript.",
-        type: "project",
         tags: ["go", "javascript", "typescript", "audit", "logs", "kubernetes", "backend", "open-source"],
         isCurrent: false,
     },
     {
         id: "g5",
-        type: "project",
         name: "Easyblocks",
         link: "https://github.com/easyblockshq/easyblocks",
         description: "The React toolkit for building completely customised visual page builders.\nIt's focused on simplicity for end-users (no HTML/CSS) and flexibilty for developers (built as a framework).",
@@ -51,7 +46,6 @@ export const githubProjectsInterests: Interest[] = [
         id: "g6",
         name: "React/ShadCN Calendar",
         description: "This calendar is built with shadcn & tailwind. Has all the aspects you'd want in a calendar for a dashboard/app!",
-        type: "project",
         tags: ["react", "calendar", "shadcn", "tailwind", "frontend", "open-source", "typescript"],
         link: "https://github.com/charlietlamb/calendar",
         isCurrent: false,
@@ -61,7 +55,6 @@ export const githubProjectsInterests: Interest[] = [
         name: "Plait",
         link:"https://github.com/worktile/plait",
         description: "Plait is a modern drawing framework that provides a plugin mechanism, allowing developers to extend drawing functionalities through plugins. It is particularly suitable for the development of interactive whiteboard tools.",
-        type: "project",
         tags: ["react", "drawing", "framework", "plugin", "whiteboard", "open-source", "typescript"],
         isCurrent: false,
     },
@@ -70,7 +63,6 @@ export const githubProjectsInterests: Interest[] = [
         name: "OpenMRS",
         link: "https://github.com/openmrs/openmrs-core",
         description: "OpenMRS is a patient-based medical record system focusing on giving providers a free customizable electronic medical record system (EMR).",
-        type: "project",
         tags: ["java", "medical", "record", "system", "open-source", "typescript"],
         image: "https://camo.githubusercontent.com/91f41be1884bb1f3a868de90a4c2a7057ca165570e46c770ec8213676754e1df/68747470733a2f2f74616c6b2e6f70656e6d72732e6f72672f75706c6f6164732f64656661756c742f6f726967696e616c2f32582f662f663165633537396230333938636230346338306135346335366461323139623234343066653234392e6a7067",
         isCurrent: false,
@@ -79,16 +71,58 @@ export const githubProjectsInterests: Interest[] = [
         id: "g9",
         name: "react-module-federation",
         description: "This document describes a proof of concept project for microfrontends using Vite and module federation. It is based on React, and implemented in TypeScript. It is possible to achieve similar results using other frameworks, or vanilla js and import maps, but the focus here is on React and Vite.",
-        type: "project",
         link: "https://github.com/krzysztofradomski/react-module-federation",
         tags: ["react", "module-federation", "microfrontend", "vite", "typescript", "open-source"],
     },
     {
         id: "g10",
         name: "Next.js WordPress-like Plugin System",
-        type: "project",
         description: "This is a proof of concept project for a WordPress-like plugin system using Next.js. It is based on React, and implemented in TypeScript. It is possible to achieve similar results using other frameworks, or vanilla js and import maps, but the focus here is on React and Next.js.",
         link: "https://github.com/gluestack/next-wordpress-plugins",
         tags: ["next.js", "wordpress", "plugin", "system", "typescript", "open-source"],
+    },
+    {
+        id: "g11",
+        name: "Apollo",
+        description: "Apollo is a reliable configuration management system suitable for microservice configuration management scenarios.",
+        image: "https://camo.githubusercontent.com/a77373be4dac9b5578822021eba31d71c216035278319133fd7fd2e01dc3f12b/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f61706f6c6c6f636f6e6669672f61706f6c6c6f406d61737465722f646f632f696d616765732f6c6f676f2f6c6f676f2d73696d706c652e706e67",
+        link: "https://github.com/apolloconfig/apollo",
+        tags: ["configuration", "management", "microservice", "typescript", "open-source"],
+    },
+    {
+        id: "g12",
+        name: "Kafdrop",
+        description: "Kafdrop is a web UI for viewing Kafka topics and browsing consumer groups. The tool displays information such as brokers, topics, partitions, consumers, and lets you view messages.",
+        image: "https://camo.githubusercontent.com/520c999ecf99364697048347779a6b83d7798a9c7980c0467a8798a3f736d7d0/68747470733a2f2f6b616664726f702e6769746875622e696f2f696d616765732f6b616664726f702d6c6f676f2e706e67",
+        link: "https://github.com/obsidiandynamics/kafdrop",
+        tags: ["kafka", "ui", "web", "typescript", "open-source" ],
+    },
+    {
+        id: "g13",
+        name: "Klaw",
+        description: " Klaw, the latest OS tool by Aiven, helps enterprises cope with Apache Kafka(r) topics, schema registry and connectors governance by introducing roles/authorizations to users of various teams of an org. ",
+        link: "https://github.com/Aiven-Open/klaw",
+        tags: ["kafka", "ui", "web", "typescript", "open-source"],
+    },
+    {
+        id: "g14",
+        name: "Novu",
+        image: "https://user-images.githubusercontent.com/2233092/213641039-220ac15f-f367-4d13-9eaf-56e79433b8c1.png",
+        description: " The notification platform that turns complex multi-channel delivery into a single component. Built for developers, designed for growth, powered by open source. ",
+        link: "https://github.com/novuhq/novu",
+        tags: ["notification", "multi-channel", "open-source", "typescript","react", "inbox"],
+    },
+    {
+        id: "g15",
+        name: "AFFiNE",
+        description: "A privacy-focused, local-first, open-source, and ready-to-use alternative for Notion & Miro.\nOne hyper-fused platform for wildly creative minds. ",
+        image: "https://camo.githubusercontent.com/db5ecd0b4438ef7009140763c94dffcd6e3f142fae0eb61aab4600743af8e519/68747470733a2f2f63646e2e616666696e652e70726f2f4769746875625f6865726f5f696d616765322e706e67",
+        link: "https://github.com/toeverything/affine",
+        tags: ["notion", "miro", "open-source", "typescript","react", "inbox", "app", "fullstack", "frontend", "backend"],
     }
 ]
+
+export const githubProjectsInterests: Interest[] = baseGithubProjectsInterests.map(interest => ({
+    ...interest,
+    type: "project",
+}))
