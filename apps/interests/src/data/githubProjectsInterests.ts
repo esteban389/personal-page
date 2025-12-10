@@ -4845,6 +4845,15 @@ const baseGithubProjectsInterests: Omit<Interest, "type">[] = [
         link: "https://github.com/moqui/moqui-framework",
         tags: ["application-framework", "crm", "database-access", "ecommerce", "entity", "erp", "framework", "freemarker", "groovy", "java", "moqui", "moqui-framework", "rest", "security", "server", "service", "web", "Groovy"],
     }
+,
+    {
+        id: "g294624699-m0kpds",
+        name: "react-pluggable",
+        description: "A plugin system for JS & React apps.",
+        image: "https://avatars.githubusercontent.com/u/18482943?v=4",
+        link: "https://github.com/GeekyAnts/react-pluggable",
+        tags: ["javascript", "open-closed-principle", "plugin-architecture", "plugin-system", "react", "react-native", "react-pluggable", "tsx", "TypeScript"],
+    }
 ]
 
 export const githubProjectsInterests: Interest[] = baseGithubProjectsInterests.map(interest => ({
