@@ -79,5 +79,25 @@ export const booksInterests: Interest[] = [
         tags: ["business", "entrepreneurship", "startup"],
         link: "https://www.amazon.com/Crossing-Chasm-3rd-Disruptive-Mainstream/dp/0062292986",
         isCurrent: false,
-      }
+      },
+      {
+        id: "9",
+        name: "A Philosophy of Software Design",
+        type: "book",
+        description: " This book addresses the topic of software design: how to decompose complex software systems into modules (such as classes and methods) that can be implemented relatively independently. The book first introduces the fundamental problem in software design, which is managing complexity. It then discusses philosophical issues about how to approach the software design process and it presents a collection of design principles to apply during software design. The book also introduces a set of red flags that identify design problems. You can apply the ideas in this book to minimize the complexity of large software systems, so that you can write software more quickly and cheaply.",
+        image: "https://m.media-amazon.com/images/I/711Qnv05eTL._SY522_.jpg",
+        tags: ["software design", "complexity", "design principles"],
+        link: "https://www.amazon.com/Philosophy-Software-Design-2nd/dp/173210221X",
+        isCurrent: true,
+      },
+      {
+        id: "10",
+        name: "The Software Engineer's Guidebook",
+        link: "http://103.203.175.90:81/fdScript/RootOfEBooks/E%20Book%20collection%20-%202024%20-%20D/CSE%20%20IT%20AIDS%20ML/The%20Software%20Engineer%20s%20Guidebook.pdf",
+        description: "This book is a guide for software engineers to help them design and build software systems.",
+        type: "book",
+        image: "https://m.media-amazon.com/images/I/711Qnv05eTL._SY522_.jpg",
+        tags: ["software design", "complexity", "design principles", "software engineering", "guidebook"],
+        isCurrent: true,
+      },
 ]

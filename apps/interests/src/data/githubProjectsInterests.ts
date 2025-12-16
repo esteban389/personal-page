@@ -4820,7 +4820,7 @@ const baseGithubProjectsInterests: Omit<Interest, "type">[] = [
         link: "https://github.com/aditya-shri/VPN",
         tags: ["free", "free-vpn", "shadowsocks", "v2ray", "vpn", "vpn-server", "Shell"],
     }
-,
+    ,
     {
         id: "g28942332-a054in",
         name: "adempiere",
@@ -4844,8 +4844,7 @@ const baseGithubProjectsInterests: Omit<Interest, "type">[] = [
         image: "https://avatars.githubusercontent.com/u/8334323?v=4",
         link: "https://github.com/moqui/moqui-framework",
         tags: ["application-framework", "crm", "database-access", "ecommerce", "entity", "erp", "framework", "freemarker", "groovy", "java", "moqui", "moqui-framework", "rest", "security", "server", "service", "web", "Groovy"],
-    }
-,
+    },
     {
         id: "g294624699-m0kpds",
         name: "react-pluggable",
@@ -4853,6 +4852,46 @@ const baseGithubProjectsInterests: Omit<Interest, "type">[] = [
         image: "https://avatars.githubusercontent.com/u/18482943?v=4",
         link: "https://github.com/GeekyAnts/react-pluggable",
         tags: ["javascript", "open-closed-principle", "plugin-architecture", "plugin-system", "react", "react-native", "react-pluggable", "tsx", "TypeScript"],
+    },
+    {
+        id: "g599414918-e8it20",
+        name: "mono",
+        description: "99% of Queries in Zero Milliseconds",
+        image: "https://avatars.githubusercontent.com/u/54663044?v=4",
+        link: "https://github.com/rocicorp/mono",
+        tags: ["TypeScript"],
+    },
+    {
+        id: "g267187299-45kh1g",
+        name: "replicache",
+        description: "Realtime Sync for Any Backend Stack",
+        image: "https://avatars.githubusercontent.com/u/54663044?v=4",
+        link: "https://github.com/rocicorp/replicache",
+        tags: ["collaborative-editing", "javascript", "multiplayer", "offline", "offline-first", "realtime", "replicache", "replicache-js-sdk", "sync", "typescript"],
+    },
+    {
+        id: "g577084297-xhugc4",
+        name: "koreui",
+        description: "CoreUI based Keycloak login theme",
+        image: "https://avatars.githubusercontent.com/u/16690839?v=4",
+        link: "https://github.com/nkelemen18/koreui",
+        tags: ["coreui", "coreui-icons", "keycloak", "keycloak-theme", "FreeMarker"],
+    },
+    {
+        id: "g939001562-npra8e",
+        name: "keycloak-custom-theme",
+        description: "This repo contains keycloack with customised themes",
+        image: "https://avatars.githubusercontent.com/u/248292302?v=4",
+        link: "https://github.com/cloakwise-io/keycloak-custom-theme",
+        tags: ["TypeScript"],
+    },
+    {
+        id: "g818326760-9e3e7e",
+        name: "fizzy",
+        description: "Kanban as it should be. Not as it has been.",
+        image: "https://avatars.githubusercontent.com/u/13131?v=4",
+        link: "https://github.com/basecamp/fizzy",
+        tags: ["hotwire", "kanban", "rails", "ruby", "Ruby"],
     }
 ]
 
