@@ -1,0 +1,68 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { portfolio } from '../data/portfolio';
+---
+
+<Layout>
+  <main id="top">
+    <header class="hero reveal">
+      <div>
+        <p class="eyebrow">{portfolio.location} · Backend engineering</p>
+        <h1>Hi, I’m Esteban.</h1>
+        <p class="hero-copy">{portfolio.description}</p>
+        <div class="hero-links">
+          <a class="primary-link" href="#work">View my work</a>
+          <a href={portfolio.githubUrl} target="_blank" rel="noreferrer">GitHub ↗</a>
+        </div>
+      </div>
+      <div class="avatar" aria-label={portfolio.name}>{portfolio.initials}</div>
+    </header>
+
+    <section id="about" class="section reveal">
+      <p class="section-number">01</p>
+      <div>
+        <h2>About</h2>
+        <p class="section-copy">{portfolio.about}</p>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <p class="section-number">02</p>
+      <div>
+        <h2>Focus</h2>
+        <ul class="skill-list" aria-label="Areas of focus">
+          {portfolio.focus.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section id="work" class="section reveal">
+      <p class="section-number">03</p>
+      <div>
+        <h2>Selected work</h2>
+        <div class="project-list">
+          {portfolio.projects.map((project) => (
+            <article class="project-card">
+              <div>
+                <h3>{project.name}</h3>
+                <p>{project.description}</p>
+              </div>
+              <a href={project.href} target="_blank" rel="noreferrer">
+                {project.label} <span aria-hidden="true">↗</span>
+              </a>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="contact reveal">
+      <p class="eyebrow">Let’s connect</p>
+      <h2>Building dependable software, one clear decision at a time.</h2>
+      <div class="hero-links">
+        <a class="primary-link" href={portfolio.githubUrl} target="_blank" rel="noreferrer">GitHub</a>
+        <a href={portfolio.blogUrl} target="_blank" rel="noreferrer">Read my writing ↗</a>
+      </div>
+    </section>
+  </main>
+</Layout>

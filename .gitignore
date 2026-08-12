@@ -2,6 +2,7 @@ node_modules/
 .DS_Store
 /apps/**/node_modules/
 /apps/**/dist/
+/apps/**/.astro/
 /packages/**/node_modules/
 /packages/**/dist/
 .env

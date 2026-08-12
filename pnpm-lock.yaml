@@ -85,10 +85,23 @@ importers:
     dependencies:
       astro:
         specifier: ^5.16.4
-        version: 5.16.4(@types/node@24.10.1)(lightningcss@1.33.0)(rollup@4.53.3)(typescript@5.9.3)(yaml@2.9.0)
+        version: 5.16.4(@types/node@24.10.1)(lightningcss@1.33.0)(rollup@4.53.3)(typescript@6.0.3)(yaml@2.9.0)
       fuse.js:
         specifier: ^7.1.0
         version: 7.1.0
+
+  apps/portfolio:
+    dependencies:
+      astro:
+        specifier: ^7.1.6
+        version: 7.2.1(@astrojs/markdown-remark@7.2.2)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@24.10.1)(yaml@2.9.0)
+    devDependencies:
+      '@astrojs/check':
+        specifier: ^0.9.9
+        version: 0.9.10(prettier-plugin-astro@0.14.1)(prettier@3.9.6)(typescript@6.0.3)
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
 
 packages:
 
@@ -3295,6 +3308,11 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
+  typescript@6.0.3:
+    resolution: {integrity: sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
   ufo@1.6.1:
     resolution: {integrity: sha512-9a4/uxlTWJ4+a5i0ooc1rU7C7YOw3wT+UGqdeNNHWnOF9qcMBgLRS+4IYUqbczewFx4mLEig6gawh7X6mFlEkA==}
 
@@ -3828,6 +3846,17 @@ snapshots:
       - prettier
       - prettier-plugin-astro
 
+  '@astrojs/check@0.9.10(prettier-plugin-astro@0.14.1)(prettier@3.9.6)(typescript@6.0.3)':
+    dependencies:
+      '@astrojs/language-server': 2.16.14(prettier-plugin-astro@0.14.1)(prettier@3.9.6)(typescript@6.0.3)
+      chokidar: 4.0.3
+      kleur: 4.1.5
+      typescript: 6.0.3
+      yargs: 18.1.0
+    transitivePeerDependencies:
+      - prettier
+      - prettier-plugin-astro
+
   '@astrojs/compiler-binding-darwin-arm64@0.3.2':
     optional: true
 
@@ -3905,6 +3934,32 @@ snapshots:
       '@astrojs/yaml2ts': 0.2.4
       '@jridgewell/sourcemap-codec': 1.5.5
       '@volar/kit': 2.4.28(typescript@5.9.3)
+      '@volar/language-core': 2.4.28
+      '@volar/language-server': 2.4.28
+      '@volar/language-service': 2.4.28
+      muggle-string: 0.4.1
+      tinyglobby: 0.2.17
+      volar-service-css: 0.0.71(@volar/language-service@2.4.28)
+      volar-service-emmet: 0.0.71(@volar/language-service@2.4.28)
+      volar-service-html: 0.0.71(@volar/language-service@2.4.28)
+      volar-service-prettier: 0.0.71(@volar/language-service@2.4.28)(prettier@3.9.6)
+      volar-service-typescript: 0.0.71(@volar/language-service@2.4.28)
+      volar-service-typescript-twoslash-queries: 0.0.71(@volar/language-service@2.4.28)
+      volar-service-yaml: 0.0.71(@volar/language-service@2.4.28)
+      vscode-html-languageservice: 5.6.2
+      vscode-uri: 3.1.0
+    optionalDependencies:
+      prettier: 3.9.6
+      prettier-plugin-astro: 0.14.1
+    transitivePeerDependencies:
+      - typescript
+
+  '@astrojs/language-server@2.16.14(prettier-plugin-astro@0.14.1)(prettier@3.9.6)(typescript@6.0.3)':
+    dependencies:
+      '@astrojs/compiler': 2.13.1
+      '@astrojs/yaml2ts': 0.2.4
+      '@jridgewell/sourcemap-codec': 1.5.5
+      '@volar/kit': 2.4.28(typescript@6.0.3)
       '@volar/language-core': 2.4.28
       '@volar/language-server': 2.4.28
       '@volar/language-service': 2.4.28
@@ -4992,6 +5047,15 @@ snapshots:
       vscode-languageserver-textdocument: 1.0.12
       vscode-uri: 3.1.0
 
+  '@volar/kit@2.4.28(typescript@6.0.3)':
+    dependencies:
+      '@volar/language-service': 2.4.28
+      '@volar/typescript': 2.4.28
+      typesafe-path: 0.2.2
+      typescript: 6.0.3
+      vscode-languageserver-textdocument: 1.0.12
+      vscode-uri: 3.1.0
+
   '@volar/language-core@2.4.28':
     dependencies:
       '@volar/source-map': 2.4.28
@@ -5127,7 +5191,7 @@ snapshots:
       rehype-expressive-code: 0.44.1
       url-extras: 0.1.0
 
-  astro@5.16.4(@types/node@24.10.1)(lightningcss@1.33.0)(rollup@4.53.3)(typescript@5.9.3)(yaml@2.9.0):
+  astro@5.16.4(@types/node@24.10.1)(lightningcss@1.33.0)(rollup@4.53.3)(typescript@6.0.3)(yaml@2.9.0):
     dependencies:
       '@astrojs/compiler': 2.13.0
       '@astrojs/internal-helpers': 0.7.5
@@ -5178,7 +5242,7 @@ snapshots:
       svgo: 4.0.0
       tinyexec: 1.0.2
       tinyglobby: 0.2.15
-      tsconfck: 3.1.6(typescript@5.9.3)
+      tsconfck: 3.1.6(typescript@6.0.3)
       ultrahtml: 1.6.0
       unifont: 0.6.0
       unist-util-visit: 5.0.0
@@ -5191,7 +5255,7 @@ snapshots:
       yocto-spinner: 0.2.3
       zod: 3.25.76
       zod-to-json-schema: 3.25.0(zod@3.25.76)
-      zod-to-ts: 1.2.0(typescript@5.9.3)(zod@3.25.76)
+      zod-to-ts: 1.2.0(typescript@6.0.3)(zod@3.25.76)
     optionalDependencies:
       sharp: 0.34.5
     transitivePeerDependencies:
@@ -7606,9 +7670,9 @@ snapshots:
     dependencies:
       typescript: 5.9.3
 
-  tsconfck@3.1.6(typescript@5.9.3):
+  tsconfck@3.1.6(typescript@6.0.3):
     optionalDependencies:
-      typescript: 5.9.3
+      typescript: 6.0.3
 
   tslib@2.8.1: {}
 
@@ -7636,6 +7700,8 @@ snapshots:
       - supports-color
 
   typescript@5.9.3: {}
+
+  typescript@6.0.3: {}
 
   ufo@1.6.1: {}
 
@@ -8001,9 +8067,9 @@ snapshots:
     dependencies:
       zod: 3.25.76
 
-  zod-to-ts@1.2.0(typescript@5.9.3)(zod@3.25.76):
+  zod-to-ts@1.2.0(typescript@6.0.3)(zod@3.25.76):
     dependencies:
-      typescript: 5.9.3
+      typescript: 6.0.3
       zod: 3.25.76
 
   zod@3.25.76: {}
