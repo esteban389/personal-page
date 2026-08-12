@@ -7,9 +7,8 @@ settings.
 
 ## Current direction
 
-The next active website will be `apps/blog`: a static blog for technical articles
-and notes. It will use the latest Astro release available when it is scaffolded
-and the [Tone](https://astro.build/themes/details/tone/) starter. Tone currently
+The active website is `apps/blog`: a static Astro blog for technical articles and
+notes, based on the [Tone](https://astro.build/themes/details/tone/) starter. It
 provides Markdown and MDX content collections, Pagefind search, RSS, a sitemap,
 and other publishing-oriented defaults.
 
@@ -21,7 +20,7 @@ validation, and build commands.
 
 ```text
 apps/
-  blog/       # Next website; not scaffolded yet
+  blog/       # Active technical articles and notes website
   interests/  # Legacy experiment; currently inactive
 packages/     # Reserved for code genuinely shared by multiple websites
 scripts/      # Repository maintenance utilities
@@ -47,8 +46,7 @@ pnpm check  # Run available type, code, and style checks
 pnpm build  # Build active websites
 ```
 
-Until `apps/blog` is created, these commands intentionally have no active app to
-run and complete without processing `apps/interests`.
+These commands process `apps/blog` and intentionally exclude `apps/interests`.
 
 ## Application contract
 
@@ -61,14 +59,8 @@ Every active website should:
   configuration;
 - remain independently deployable from the other websites.
 
-The planned blog scaffold command is:
-
-```sh
-pnpm create astro@latest apps/blog --template hanityx/astro-tone
-```
-
-After scaffolding, keep the root `pnpm-lock.yaml`, remove any app-local lockfile,
-and ensure the package follows the application contract above.
+The workspace keeps a single root `pnpm-lock.yaml`; applications do not own
+independent lockfiles.
 
 ## Validation
 
