@@ -3,6 +3,8 @@ title: 'Demystifying Authentication in Spring Security'
 description: 'A guided tour through Spring Security authentication, providers, filter chains, and security context persistence.'
 pubDate: '2025-03-19'
 category: 'Technical Articles'
+lang: 'en'
+translationKey: 'spring-security-authentication'
 ---
 
 > Originally published on [DEV Community](https://dev.to/esteban389/demystifying-authentication-in-spring-security-57oj) on March 19, 2025.

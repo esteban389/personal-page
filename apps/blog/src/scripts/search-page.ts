@@ -65,14 +65,14 @@ async function initSearchPage() {
       element: '#search',
       showSubResults: true,
       translations: {
-        placeholder: 'Search posts...',
-        zero_results: 'No results for [QUERY]',
+        placeholder: el.dataset.placeholder || 'Search posts...',
+        zero_results: el.dataset.zeroResults || 'No results for [QUERY]',
       },
     });
     el.setAttribute('aria-busy', 'false');
   } catch {
     el.setAttribute('aria-busy', 'false');
-    el.textContent = 'Search is available after a production build.';
+    el.textContent = el.dataset.productionOnly || 'Search is available after a production build.';
   }
 }
 

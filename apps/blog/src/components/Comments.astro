@@ -1,6 +1,13 @@
 ---
 import config from '../../astro-theme-config';
 import { withBase, withoutBase } from '../utils/paths';
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
 
 const comments = config.comments;
 const giscus = {
@@ -44,7 +51,7 @@ const giscusMapping = giscus.mapping === 'pathname' ? 'specific' : giscus.mappin
         data-input-position="bottom"
         data-theme={giscus.theme}
         data-theme-mode={commentsMode === 'giscus-custom' ? 'custom' : 'default'}
-        data-lang={giscus.lang}
+        data-lang={locale}
         data-loading={giscus.loading}
         data-light-theme-path={withBase(giscus.customLightTheme)}
         data-dark-theme-path={withBase(giscus.customDarkTheme)}

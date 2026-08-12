@@ -5,7 +5,7 @@ import { withBase } from '../utils/paths';
 
 export async function GET(context) {
   const posts = (await getCollection('posts'))
-    .filter((p) => !p.data.draft)
+    .filter((p) => !p.data.draft && p.data.lang === 'en')
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
   return rss({

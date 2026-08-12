@@ -5,6 +5,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import SearchPalette from '../components/SearchPalette.astro';
+import { getLocale, getLocaleConfig, otherLocale, type Locale } from '../i18n';
 
 interface Props {
   title: string;
@@ -17,8 +18,8 @@ interface Props {
   robots?: string;
   canonicalUrl?: string;
   pageUrl?: string;
-  lang?: string;
-  locale?: string;
+  locale?: Locale;
+  alternateUrl?: string;
   bodyClass?: string;
 }
 
@@ -33,15 +34,26 @@ const {
   robots,
   canonicalUrl,
   pageUrl,
-  lang,
   locale,
+  alternateUrl,
   bodyClass,
 } = Astro.props;
-const htmlLang = lang ?? config.site.lang;
+const activeLocale = getLocale(locale);
+const localizedSite = getLocaleConfig(activeLocale);
+const alternateLocale = otherLocale(activeLocale);
+const alternateLinks = alternateUrl
+  ? [
+      { lang: activeLocale, href: Astro.url.pathname },
+      { lang: alternateLocale, href: alternateUrl },
+    ]
+  : [];
 ---
 
 <!doctype html>
-<html lang={htmlLang} data-smooth-scroll={config.behavior.smoothScroll ? 'true' : 'false'}>
+<html
+  lang={localizedSite.lang}
+  data-smooth-scroll={config.behavior.smoothScroll ? 'true' : 'false'}
+>
   <head>
     <BaseHead
       title={title}
@@ -54,15 +66,19 @@ const htmlLang = lang ?? config.site.lang;
       robots={robots}
       canonicalUrl={canonicalUrl}
       pageUrl={pageUrl}
-      locale={locale}
+      locale={localizedSite.locale}
+      lang={activeLocale}
+      siteTitle={localizedSite.title}
+      siteDescription={localizedSite.description}
+      alternateLinks={alternateLinks}
     />
     <slot name="head" />
   </head>
   <body class={bodyClass}>
-    <Header />
-    <SearchPalette />
+    <Header locale={activeLocale} alternateUrl={alternateUrl} />
+    <SearchPalette locale={activeLocale} />
     <slot />
-    <Footer />
+    <Footer locale={activeLocale} />
     <script>
       import { onReady } from '../scripts/mount';
       import { mountImageLoadingStates } from '../scripts/image-loading';

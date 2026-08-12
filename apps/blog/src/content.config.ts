@@ -16,6 +16,8 @@ const posts = defineCollection({
       heroImage: z.optional(image()),
       focusEffect: z.literal('scroll-dark').optional(),
       category: z.string().optional(),
+      lang: z.enum(['en', 'es']).default('en'),
+      translationKey: z.string().optional(),
       homeFeatured: z.boolean().default(false),
       homeHeroOrder: z.number().int().positive().optional(),
       homeOrder: z.number().int().positive().optional(),

@@ -4,6 +4,7 @@ import config from '../../astro-theme-config';
 import { getUiText } from '../ui';
 import { withBase } from '../utils/paths';
 import FormattedDate from './FormattedDate.astro';
+import { localizedPath, localizedPostSlug, type Locale } from '../i18n';
 
 type PostEntry = CollectionEntry<'posts'>;
 
@@ -14,6 +15,7 @@ type Props = {
   showFilters?: boolean;
   showMore?: boolean;
   initialVisible?: number;
+  locale?: Locale;
 };
 
 const {
@@ -23,11 +25,12 @@ const {
   showFilters = true,
   showMore = true,
   initialVisible = 8,
+  locale = 'en',
 } = Astro.props;
 
 const labels = getUiText().postFeed;
 
-const postSlug = (id: string) => id;
+const postSlug = (id: string) => localizedPostSlug(id, locale);
 const categoryOrder = config.content.categoryOrder;
 const sortByCategoryOrder = (a: string, b: string) => {
   const aIndex = categoryOrder.indexOf(a);
@@ -156,8 +159,11 @@ const Heading = headingLevel;
           data-search={`${post.data.title} ${post.data.description} ${post.data.category ?? ''}`.toLocaleLowerCase()}
           data-index={index}
         >
-          <a href={withBase(`${basePath}/${postSlug(post.id)}/`)} class="feed-link">
-            <FormattedDate class="feed-date" date={post.data.pubDate} />
+          <a
+            href={withBase(localizedPath(locale, `${basePath}/${postSlug(post.id)}/`))}
+            class="feed-link"
+          >
+            <FormattedDate class="feed-date" date={post.data.pubDate} locale={locale} />
             <div class="feed-body">
               <Heading class="feed-title">{post.data.title}</Heading>
               {post.data.description && <p class="feed-desc">{post.data.description}</p>}

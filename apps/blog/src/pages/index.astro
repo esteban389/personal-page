@@ -5,13 +5,27 @@ import { getCollection } from 'astro:content';
 import FeaturedPostGrid from '../components/FeaturedPostGrid.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { DATE_LOCALE, SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import { getUiText } from '../ui';
 import { withBase } from '../utils/paths';
-const tr = getUiText();
+import {
+  getLocaleConfig,
+  localizedPath,
+  localizedPostSlug,
+  otherLocale,
+  type Locale,
+} from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const tr = getUiText(locale);
+const site = getLocaleConfig(locale);
+const alternateUrl = localizedPath(otherLocale(locale), '/');
 
 const posts = (await getCollection('posts'))
-  .filter((p) => !p.data.draft)
+  .filter((p) => !p.data.draft && p.data.lang === locale)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const featured = posts.find((post) => post.data.homeFeatured) ?? posts[0];
@@ -25,7 +39,7 @@ const pinnedHeroPosts = posts
   });
 const fallbackHeroPosts = heroCandidates.filter((post) => !post.data.homeHeroOrder);
 const heroPosts = [...pinnedHeroPosts, ...fallbackHeroPosts].slice(0, 2);
-const heroDateFormatter = new Intl.DateTimeFormat(DATE_LOCALE, {
+const heroDateFormatter = new Intl.DateTimeFormat(site.dateLocale, {
   year: 'numeric',
   month: 'short',
   day: '2-digit',
@@ -60,7 +74,12 @@ const featuredPlaceholderStyle = featuredPlaceholder
   : undefined;
 ---
 
-<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+<BaseLayout
+  title={site.title}
+  description={site.description}
+  locale={locale}
+  alternateUrl={alternateUrl}
+>
   <main id="main-content" class="home-main">
     <section class="hero">
       <h1 class="hero-title">
@@ -72,19 +91,27 @@ const featuredPlaceholderStyle = featuredPlaceholder
         }
       </h1>
 
-      <p class="hero-desc">{SITE_DESCRIPTION}</p>
+      <p class="hero-desc">{site.description}</p>
 
       <div class="hero-divider" aria-hidden="true"></div>
 
       {
         heroPosts.length > 0 && (
-          <nav class="hero-recent" aria-label="Selected posts">
+          <nav
+            class="hero-recent"
+            aria-label={locale === 'es' ? 'Artículos seleccionados' : 'Selected posts'}
+          >
             <div class="hero-recent-list">
               {heroPosts.map((post) => {
                 const heroDate = getHeroDateParts(post.data.pubDate);
 
                 return (
-                  <a href={withBase(`/posts/${post.id}/`)} class="hero-recent-item">
+                  <a
+                    href={withBase(
+                      localizedPath(locale, `/posts/${localizedPostSlug(post.id, locale)}/`)
+                    )}
+                    class="hero-recent-item"
+                  >
                     <span class="hero-recent-main">
                       <span class="hero-recent-title">{post.data.title}</span>
                       <span class="hero-recent-arrow" aria-hidden="true">
@@ -110,10 +137,15 @@ const featuredPlaceholderStyle = featuredPlaceholder
     {
       featured && (
         <section class="featured-section">
-          <a href={withBase(`/posts/${featured.id}/`)} class="featured-card">
+          <a
+            href={withBase(
+              localizedPath(locale, `/posts/${localizedPostSlug(featured.id, locale)}/`)
+            )}
+            class="featured-card"
+          >
             <div class="featured-text">
               <p class="featured-meta">
-                <FormattedDate date={featured.data.pubDate} />
+                <FormattedDate date={featured.data.pubDate} locale={locale} />
               </p>
               <h2 class="featured-title">{featured.data.title}</h2>
               {featured.data.description && (
@@ -145,11 +177,11 @@ const featuredPlaceholderStyle = featuredPlaceholder
       gridPosts.length > 0 && (
         <section class="posts-section">
           <div class="posts-header">
-            <a href={withBase('/posts')} class="view-all">
+            <a href={withBase(localizedPath(locale, '/posts'))} class="view-all">
               {tr.viewAll}
             </a>
           </div>
-          <FeaturedPostGrid posts={gridPosts} />
+          <FeaturedPostGrid posts={gridPosts} locale={locale} />
         </section>
       )
     }

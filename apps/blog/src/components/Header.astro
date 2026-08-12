@@ -3,6 +3,18 @@ import config from '../../astro-theme-config';
 import HeaderLink from './HeaderLink.astro';
 import ThemeToggle from './ThemeToggle.astro';
 import { withBase } from '../utils/paths';
+import { localizedPath, otherLocale, type Locale } from '../i18n';
+import { getUiText } from '../ui';
+
+interface Props {
+  locale?: Locale;
+  alternateUrl?: string;
+}
+
+const { locale = 'en', alternateUrl } = Astro.props;
+const targetLocale = otherLocale(locale);
+const languageHref = alternateUrl ?? localizedPath(targetLocale, '/');
+const tr = getUiText(locale);
 
 const skipLinkLabel = 'Skip to content';
 const navAriaLabel = 'Primary navigation';
@@ -17,6 +29,10 @@ const navItems = config.nav;
     <div class="nav-right">
       <div class="nav-links">
         {navItems.map((item) => <HeaderLink href={item.href}>{item.label}</HeaderLink>)}
+        <a class="language-link" href={withBase(languageHref)} hreflang={targetLocale}>
+          {targetLocale.toUpperCase()}
+          <span class="sr-only">{tr.navigation.switchLanguage}</span>
+        </a>
       </div>
       <ThemeToggle />
     </div>
@@ -151,6 +167,18 @@ const navItems = config.nav;
     display: flex;
     align-items: center;
     gap: var(--space-4);
+  }
+
+  .language-link {
+    color: var(--label-secondary);
+    font-size: var(--text-caption-1);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.06em;
+    text-decoration: none;
+  }
+
+  .language-link:hover {
+    color: var(--label-primary);
   }
 
   @media (min-width: 55rem) {

@@ -3,17 +3,29 @@ import '../../styles/pages/posts-index.css';
 import { getCollection } from 'astro:content';
 import PostFeed from '../../components/PostFeed.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { SITE_DESCRIPTION } from '../../consts';
 import { getUiText } from '../../ui';
+import { getLocaleConfig, localizedPath, otherLocale, type Locale } from '../../i18n';
 
-const tr = getUiText();
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const tr = getUiText(locale);
+const site = getLocaleConfig(locale);
+const alternateUrl = localizedPath(otherLocale(locale), '/posts/');
 
 const posts = (await getCollection('posts'))
-  .filter((p) => !p.data.draft)
+  .filter((p) => !p.data.draft && p.data.lang === locale)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
-<BaseLayout title={tr.postsTitle} description={SITE_DESCRIPTION}>
+<BaseLayout
+  title={tr.postsTitle}
+  description={site.description}
+  locale={locale}
+  alternateUrl={alternateUrl}
+>
   <main id="main-content" class="posts-main">
     <div class="posts-header">
       <div>
@@ -22,6 +34,6 @@ const posts = (await getCollection('posts'))
       </div>
     </div>
 
-    <PostFeed posts={posts} basePath="/posts" initialVisible={8} />
+    <PostFeed posts={posts} basePath="/posts" initialVisible={8} locale={locale} />
   </main>
 </BaseLayout>

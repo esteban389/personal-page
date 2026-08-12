@@ -1,10 +1,27 @@
 ---
 import config from '../../astro-theme-config';
 import { withBase } from '../utils/paths';
+import { localizedPath, type Locale } from '../i18n';
+import { getUiText } from '../ui';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const tr = getUiText(locale);
 
 const today = new Date();
 const footerTitle = config.site.logoLabel || config.site.title;
 const footerLinks = config.footerNav.filter((item) => item.href !== '/');
+const footerLabel = (href: string, fallback: string) => {
+  if (href === '/posts') return tr.navigation.posts;
+  if (href === '/about') return tr.navigation.about;
+  if (href === '/search') return tr.navigation.search;
+  return fallback;
+};
+const footerHref = (href: string) =>
+  locale === 'es' && href === '/about' ? href : localizedPath(locale, href);
 ---
 
 <footer class="site-footer">
@@ -18,10 +35,10 @@ const footerLinks = config.footerNav.filter((item) => item.href !== '/');
         <nav class="footer-links" aria-label="Footer navigation">
           {footerLinks.map((item) => (
             <a
-              href={withBase(item.href)}
+              href={withBase(footerHref(item.href))}
               data-search-palette-trigger={item.href === '/search' ? 'true' : undefined}
             >
-              {item.label}
+              {footerLabel(item.href, item.label)}
             </a>
           ))}
         </nav>

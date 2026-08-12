@@ -2,15 +2,38 @@
 import '../styles/pages/search.css';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { withBase } from '../utils/paths';
+import { localizedPath, otherLocale, type Locale } from '../i18n';
+import { getUiText } from '../ui';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const tr = getUiText(locale);
+const alternateUrl = localizedPath(otherLocale(locale), '/search/');
 ---
 
-<BaseLayout title="Search" description="Search posts" robots="noindex, follow">
+<BaseLayout
+  title={tr.search.title}
+  description={tr.search.description}
+  robots="noindex, follow"
+  locale={locale}
+  alternateUrl={alternateUrl}
+>
   <main id="main-content" class="search-main">
     <div class="search-header">
-      <h1 class="search-title">Search</h1>
+      <h1 class="search-title">{tr.search.title}</h1>
     </div>
-    <div id="search" class="search-ui" aria-busy="true">
-      <p class="search-loading" role="status">Loading search...</p>
+    <div
+      id="search"
+      class="search-ui"
+      aria-busy="true"
+      data-placeholder={tr.search.placeholder}
+      data-zero-results={tr.search.zeroResults}
+      data-production-only={tr.search.productionOnly}
+    >
+      <p class="search-loading" role="status">{tr.search.loading}</p>
       <noscript>
         <style>
           .search-loading {
@@ -18,7 +41,8 @@ import { withBase } from '../utils/paths';
           }
         </style>
         <p class="search-fallback">
-          Search needs JavaScript. Browse the <a href={withBase('/posts/')}>posts archive</a> instead.
+          {tr.search.requiresJavaScript}
+          <a href={withBase(localizedPath(locale, '/posts/'))}>{tr.search.browseArchive}</a>
         </p>
       </noscript>
     </div>

@@ -2,20 +2,34 @@
 import { getCollection } from 'astro:content';
 import { withBase } from '../utils/paths';
 import { serializeScriptJson } from '../utils/serialize-script-json';
+import { localizedPath, localizedPostSlug, type Locale } from '../i18n';
+import { getUiText } from '../ui';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const tr = getUiText(locale);
 
 const posts = (await getCollection('posts'))
-  .filter((post) => !post.data.draft)
+  .filter((post) => !post.data.draft && post.data.lang === locale)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const items = posts.map((post) => ({
   title: post.data.title,
   description: post.data.description,
   category: post.data.category ?? 'Post',
-  href: withBase(`/posts/${post.id}/`),
+  href: withBase(localizedPath(locale, `/posts/${localizedPostSlug(post.id, locale)}/`)),
 }));
 ---
 
-<dialog class="search-palette" data-search-palette aria-label="Search posts">
+<dialog
+  class="search-palette"
+  data-search-palette
+  data-empty-message={tr.postFeed.empty}
+  aria-label={tr.postFeed.searchLabel}
+>
   <div class="search-palette-panel">
     <div class="search-palette-field">
       <svg viewBox="0 0 20 20" aria-hidden="true">
@@ -25,15 +39,15 @@ const items = posts.map((post) => ({
       <input
         type="search"
         data-search-palette-input
-        placeholder="Search posts"
+        placeholder={tr.postFeed.searchLabel}
         autocomplete="off"
-        aria-label="Search posts"
+        aria-label={tr.postFeed.searchLabel}
       />
       <button
         class="search-palette-close"
         type="button"
         data-search-palette-close
-        aria-label="Close search"
+        aria-label={locale === 'es' ? 'Cerrar búsqueda' : 'Close search'}
       >
         <svg viewBox="0 0 20 20" aria-hidden="true">
           <path d="M5 5l10 10M15 5 5 15"></path>

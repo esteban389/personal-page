@@ -33,6 +33,26 @@ const config = {
     defaultOgImage: '',
   },
 
+  i18n: {
+    defaultLocale: 'en',
+    locales: {
+      en: {
+        lang: 'en',
+        locale: 'en_US',
+        dateLocale: 'en-US',
+        title: "Esteban's Blog",
+        description: 'Technical articles, working notes, and lessons from building software.',
+      },
+      es: {
+        lang: 'es',
+        locale: 'es_CO',
+        dateLocale: 'es-CO',
+        title: 'Blog de Esteban',
+        description: 'Artículos técnicos, notas de trabajo y lecciones aprendidas construyendo software.',
+      },
+    },
+  },
+
   // The logo already links to `/`. Add items here if you want visible header links.
   // Example: [{ label: 'Posts', href: '/posts' }, { label: 'About', href: '/about' }]
   nav: [] as NavItem[],

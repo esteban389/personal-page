@@ -3,6 +3,7 @@ import { Image, getImage } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import FormattedDate from './FormattedDate.astro';
 import { withBase } from '../utils/paths';
+import { localizedPath, localizedPostSlug, type Locale } from '../i18n';
 
 type PostEntry = CollectionEntry<'posts'>;
 
@@ -10,10 +11,11 @@ type Props = {
   posts: PostEntry[];
   basePath?: string;
   variant?: 'home' | 'related';
+  locale?: Locale;
 };
 
-const { posts, basePath = '/posts', variant = 'home' } = Astro.props;
-const postSlug = (id: string) => id;
+const { posts, basePath = '/posts', variant = 'home', locale = 'en' } = Astro.props;
+const postSlug = (id: string) => localizedPostSlug(id, locale);
 const placeholderEntries = await Promise.all(
   posts.map(
     async (post) =>
@@ -41,7 +43,7 @@ const imagePlaceholderStyle = (src: string | undefined) =>
   {
     posts.map((post, index) => (
       <a
-        href={withBase(`${basePath}/${postSlug(post.id)}/`)}
+        href={withBase(localizedPath(locale, `${basePath}/${postSlug(post.id)}/`))}
         class:list={['featured-post-card', `featured-post-card--slot-${index + 1}`]}
       >
         <div
@@ -73,7 +75,7 @@ const imagePlaceholderStyle = (src: string | undefined) =>
         </div>
         <div class="featured-post-card-body">
           <p class="featured-post-card-date">
-            <FormattedDate date={post.data.pubDate} />
+            <FormattedDate date={post.data.pubDate} locale={locale} />
           </p>
           <h3 class="featured-post-card-title">{post.data.title}</h3>
           {post.data.description && <p class="featured-post-card-desc">{post.data.description}</p>}
