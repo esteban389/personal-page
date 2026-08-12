@@ -11,8 +11,9 @@ import { portfolio } from '../data/portfolio';
         <h1>Hi, I’m Esteban.</h1>
         <p class="hero-copy">{portfolio.description}</p>
         <div class="hero-links">
-          <a class="primary-link" href="#work">View my work</a>
+          <a class="primary-link" href="#experience">View experience</a>
           <a href={portfolio.githubUrl} target="_blank" rel="noreferrer">GitHub ↗</a>
+          <a href={portfolio.linkedinUrl} target="_blank" rel="noreferrer">LinkedIn ↗</a>
         </div>
       </div>
       <div class="avatar" aria-label={portfolio.name}>{portfolio.initials}</div>
@@ -36,33 +37,65 @@ import { portfolio } from '../data/portfolio';
       </div>
     </section>
 
-    <section id="work" class="section reveal">
+    <section id="experience" class="section reveal">
       <p class="section-number">03</p>
       <div>
-        <h2>Selected work</h2>
-        <div class="project-list">
-          {portfolio.projects.map((project) => (
-            <article class="project-card">
-              <div>
-                <h3>{project.name}</h3>
-                <p>{project.description}</p>
+        <h2>Experience</h2>
+        <div class="experience-list">
+          {portfolio.experience.map((job) => (
+            <article class="experience-card">
+              <div class="experience-heading">
+                <div>
+                  <h3>{job.organization}</h3>
+                  <p class="role">{job.role}</p>
+                </div>
+                <p class="experience-meta">{job.location}<br />{job.period}</p>
               </div>
-              <a href={project.href} target="_blank" rel="noreferrer">
-                {project.label} <span aria-hidden="true">↗</span>
-              </a>
+              <p class="experience-summary">{job.summary}</p>
+              <ul>
+                {job.highlights.map((highlight) => <li>{highlight}</li>)}
+              </ul>
             </article>
           ))}
         </div>
       </div>
     </section>
 
+    <section class="section reveal">
+      <p class="section-number">04</p>
+      <div class="credentials-grid">
+        <div>
+          <h2>Education</h2>
+          <article class="credential">
+            <h3>{portfolio.education.institution}</h3>
+            <p>{portfolio.education.degree}</p>
+            <span>{portfolio.education.location} · {portfolio.education.year}</span>
+          </article>
+        </div>
+        <div>
+          <h2>Certifications</h2>
+          <ul class="plain-list">
+            {portfolio.certifications.map((certification) => <li>{certification}</li>)}
+          </ul>
+        </div>
+        <div>
+          <h2>Languages</h2>
+          <ul class="plain-list inline-list">
+            {portfolio.languages.map((language) => <li>{language}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
     <section class="contact reveal">
       <p class="eyebrow">Let’s connect</p>
-      <h2>Building dependable software, one clear decision at a time.</h2>
+      <h2>Let’s build software that stays correct when the real world gets complicated.</h2>
       <div class="hero-links">
-        <a class="primary-link" href={portfolio.githubUrl} target="_blank" rel="noreferrer">GitHub</a>
+        <a class="primary-link" href={`mailto:${portfolio.email}`}>Email me</a>
+        <a href={portfolio.linkedinUrl} target="_blank" rel="noreferrer">LinkedIn ↗</a>
         <a href={portfolio.blogUrl} target="_blank" rel="noreferrer">Read my writing ↗</a>
       </div>
+      <p class="contact-detail">{portfolio.email} · {portfolio.phone}</p>
     </section>
   </main>
 </Layout>
