@@ -1,20 +1,27 @@
 {
   "name": "personal-page",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Workspace for Esteban's independently deployable personal websites.",
+  "private": true,
   "type": "module",
   "bin": {
     "starred-github-projects": "./scripts/getGithubStarredProjects.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "interests:build": "env $(cat .env | xargs) pnpm --filter @esteban/interests build",
-    "interests:dev": "env $(cat .env | xargs) pnpm --filter @esteban/interests dev",
+    "dev": "pnpm --filter './apps/*' --filter '!@esteban/interests' --parallel --if-present -r dev",
+    "build": "pnpm --filter './apps/*' --filter '!@esteban/interests' --if-present -r build",
+    "check": "pnpm run check:types && pnpm run lint",
+    "check:types": "pnpm --filter './apps/*' --filter '!@esteban/interests' --if-present -r check",
+    "lint": "pnpm run lint:code && pnpm run lint:styles",
+    "lint:code": "pnpm --filter './apps/*' --filter '!@esteban/interests' --if-present -r lint",
+    "lint:styles": "pnpm --filter './apps/*' --filter '!@esteban/interests' --if-present -r lint:css",
     "starred-github-projects": "npx starred-github-projects"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "packageManager": "pnpm@10.12.1"
 }
