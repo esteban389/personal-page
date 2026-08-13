@@ -7,95 +7,101 @@ import { portfolio } from '../data/portfolio';
   <main id="top">
     <header class="hero reveal">
       <div>
-        <p class="eyebrow">{portfolio.location} · Backend engineering</p>
-        <h1>Hi, I’m Esteban.</h1>
-        <p class="hero-copy">{portfolio.description}</p>
-        <div class="hero-links">
-          <a class="primary-link" href="#experience">View experience</a>
-          <a href={portfolio.githubUrl} target="_blank" rel="noreferrer">GitHub ↗</a>
-          <a href={portfolio.linkedinUrl} target="_blank" rel="noreferrer">LinkedIn ↗</a>
-        </div>
+        <h1>Hi, I’m Esteban</h1>
+        <p>{portfolio.description}</p>
       </div>
       <div class="avatar" aria-label={portfolio.name}>{portfolio.initials}</div>
     </header>
 
     <section id="about" class="section reveal">
-      <p class="section-number">01</p>
-      <div>
-        <h2>About</h2>
-        <p class="section-copy">{portfolio.about}</p>
+      <h2>About</h2>
+      <p class="about-copy">{portfolio.about}</p>
+    </section>
+
+    <section id="work" class="section reveal">
+      <h2>Work Experience</h2>
+      <div class="timeline">
+        {portfolio.work.map((job, index) => (
+          <details class="job" open={index === 0}>
+            <summary>
+              <span class="monogram" aria-hidden="true">{job.company.charAt(0)}</span>
+              <span class="job-title">
+                <strong>{job.company}</strong>
+                <span>{job.role}</span>
+              </span>
+              <span class="job-period">{job.period}</span>
+            </summary>
+            <div class="job-detail">
+              <p class="job-location">{job.location}</p>
+              <p>{job.description}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section id="education" class="section reveal">
+      <h2>Education</h2>
+      <div class="education-row">
+        <span class="monogram" aria-hidden="true">U</span>
+        <span class="job-title">
+          <strong>{portfolio.education.institution}</strong>
+          <span>{portfolio.education.degree}</span>
+        </span>
+        <span class="job-period">{portfolio.education.period}</span>
       </div>
     </section>
 
     <section class="section reveal">
-      <p class="section-number">02</p>
-      <div>
-        <h2>Focus</h2>
-        <ul class="skill-list" aria-label="Areas of focus">
-          {portfolio.focus.map((item) => <li>{item}</li>)}
-        </ul>
-      </div>
+      <h2>Skills</h2>
+      <ul class="skill-list" aria-label="Technical skills">
+        {portfolio.skills.map((skill) => <li>{skill}</li>)}
+      </ul>
     </section>
 
-    <section id="experience" class="section reveal">
-      <p class="section-number">03</p>
-      <div>
-        <h2>Experience</h2>
-        <div class="experience-list">
-          {portfolio.experience.map((job) => (
-            <article class="experience-card">
-              <div class="experience-heading">
-                <div>
-                  <h3>{job.organization}</h3>
-                  <p class="role">{job.role}</p>
-                </div>
-                <p class="experience-meta">{job.location}<br />{job.period}</p>
+    <section id="projects" class="showcase reveal">
+      <div class="section-intro">
+        <span>Selected systems</span>
+        <h2>Production work</h2>
+        <p>A few systems I’ve helped take from requirements and incidents to dependable production software.</p>
+      </div>
+      <div class="project-grid">
+        {portfolio.systems.map((system, index) => (
+          <article class="project-card">
+            <div class={`project-visual visual-${index + 1}`} aria-hidden="true">
+              <span>{String(index + 1).padStart(2, '0')}</span>
+            </div>
+            <div class="project-content">
+              <div class="project-heading">
+                <h3>{system.name}</h3>
+                <span>{system.status}</span>
               </div>
-              <p class="experience-summary">{job.summary}</p>
+              <p>{system.description}</p>
               <ul>
-                {job.highlights.map((highlight) => <li>{highlight}</li>)}
+                {system.technologies.map((technology) => <li>{technology}</li>)}
               </ul>
-            </article>
-          ))}
-        </div>
+            </div>
+          </article>
+        ))}
       </div>
     </section>
 
     <section class="section reveal">
-      <p class="section-number">04</p>
-      <div class="credentials-grid">
-        <div>
-          <h2>Education</h2>
-          <article class="credential">
-            <h3>{portfolio.education.institution}</h3>
-            <p>{portfolio.education.degree}</p>
-            <span>{portfolio.education.location} · {portfolio.education.year}</span>
-          </article>
-        </div>
-        <div>
-          <h2>Certifications</h2>
-          <ul class="plain-list">
-            {portfolio.certifications.map((certification) => <li>{certification}</li>)}
-          </ul>
-        </div>
-        <div>
-          <h2>Languages</h2>
-          <ul class="plain-list inline-list">
-            {portfolio.languages.map((language) => <li>{language}</li>)}
-          </ul>
-        </div>
-      </div>
+      <h2>Certifications</h2>
+      <ul class="certification-list">
+        {portfolio.certifications.map((certification) => <li>{certification}</li>)}
+      </ul>
     </section>
 
-    <section class="contact reveal">
-      <p class="eyebrow">Let’s connect</p>
-      <h2>Let’s build software that stays correct when the real world gets complicated.</h2>
-      <div class="hero-links">
-        <a class="primary-link" href={`mailto:${portfolio.email}`}>Email me</a>
+    <section id="contact" class="contact reveal">
+      <span>Contact</span>
+      <h2>Get in touch</h2>
+      <p>Have a backend problem, a production system to improve, or just want to compare notes?</p>
+      <div class="contact-links">
+        <a href={`mailto:${portfolio.email}`}>Email me</a>
         <a href={portfolio.linkedinUrl} target="_blank" rel="noreferrer">LinkedIn ↗</a>
-        <a href={portfolio.blogUrl} target="_blank" rel="noreferrer">Read my writing ↗</a>
+        <a href={portfolio.githubUrl} target="_blank" rel="noreferrer">GitHub ↗</a>
       </div>
-      <p class="contact-detail">{portfolio.email} · {portfolio.phone}</p>
     </section>
   </main>
 </Layout>

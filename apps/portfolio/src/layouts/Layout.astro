@@ -8,7 +8,7 @@ interface Props {
 }
 
 const {
-  title = `${portfolio.name} — ${portfolio.role}`,
+  title = `${portfolio.name} - ${portfolio.role}`,
   description = portfolio.description,
 } = Astro.props;
 const canonicalUrl = new URL(Astro.url.pathname, portfolio.siteUrl);
@@ -39,21 +39,20 @@ const canonicalUrl = new URL(Astro.url.pathname, portfolio.siteUrl);
   </head>
   <body>
     <div class="grid-wash" aria-hidden="true"></div>
-    <div class="page-shell">
-      <slot />
-    </div>
+    <div class="page-shell"><slot /></div>
     <nav class="dock" aria-label="Primary navigation">
-      <a href="#top" aria-label="Home">Home</a>
-      <a href="#about">About</a>
-      <a href="#experience">Experience</a>
-      <a href={portfolio.blogUrl} target="_blank" rel="noreferrer">Blog ↗</a>
-      <button class="theme-toggle" type="button" aria-label="Toggle color theme">
-        <span class="theme-icon" aria-hidden="true">◐</span>
-      </button>
+      <a href="#top" aria-label="Home" title="Home">⌂</a>
+      <a href="#work" aria-label="Work experience" title="Work experience">▥</a>
+      <a href="#projects" aria-label="Projects" title="Projects">◇</a>
+      <a href={portfolio.blogUrl} target="_blank" rel="noreferrer" aria-label="Blog" title="Blog">B</a>
+      <span class="dock-separator"></span>
+      <a href={portfolio.githubUrl} target="_blank" rel="noreferrer" aria-label="GitHub" title="GitHub">GH</a>
+      <a href={portfolio.linkedinUrl} target="_blank" rel="noreferrer" aria-label="LinkedIn" title="LinkedIn">in</a>
+      <span class="dock-separator"></span>
+      <button class="theme-toggle" type="button" aria-label="Toggle color theme" title="Toggle theme">◐</button>
     </nav>
     <script is:inline>
-      const toggle = document.querySelector('.theme-toggle');
-      toggle?.addEventListener('click', () => {
+      document.querySelector('.theme-toggle')?.addEventListener('click', () => {
         const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
         document.documentElement.dataset.theme = next;
         localStorage.setItem('theme', next);
