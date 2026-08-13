@@ -1,0 +1,123 @@
+---
+import Layout from '../layouts/Layout.astro';
+import type { Portfolio } from '../data/portfolio';
+
+interface Props {
+  portfolio: Portfolio;
+}
+
+const { portfolio } = Astro.props;
+const isSpanish = portfolio.locale === 'es';
+---
+
+<Layout portfolio={portfolio}>
+  <main id="top">
+    <header class="hero reveal">
+      <div>
+        <h1>{portfolio.greeting}</h1>
+        <p>{portfolio.description}</p>
+      </div>
+      <div class="avatar">
+        <img
+          src="/profile.jpeg"
+          alt={isSpanish ? `Retrato de ${portfolio.name}` : `Portrait of ${portfolio.name}`}
+          width={224}
+          height={224}
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+    </header>
+
+    <section id="about" class="section reveal">
+      <h2>{portfolio.labels.about}</h2>
+      <p class="about-copy">{portfolio.about}</p>
+    </section>
+
+    <section id="work" class="section reveal">
+      <h2>{portfolio.labels.work}</h2>
+      <div class="timeline">
+        {portfolio.work.map((job, index) => (
+          <details class="job" open={index === 0}>
+            <summary>
+              <span class="monogram" aria-hidden="true">{job.company.charAt(0)}</span>
+              <span class="job-title">
+                <strong>{job.company}</strong>
+                <span>{job.role}</span>
+              </span>
+              <span class="job-period">{job.period}</span>
+            </summary>
+            <div class="job-detail">
+              <p class="job-location">{job.location}</p>
+              <p>{job.description}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section id="education" class="section reveal">
+      <h2>{portfolio.labels.education}</h2>
+      <div class="education-row">
+        <span class="monogram" aria-hidden="true">U</span>
+        <span class="job-title">
+          <strong>{portfolio.education.institution}</strong>
+          <span>{portfolio.education.degree}</span>
+        </span>
+        <span class="job-period">{portfolio.education.period}</span>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <h2>{portfolio.labels.skills}</h2>
+      <ul class="skill-list" aria-label={portfolio.labels.skills}>
+        {portfolio.skills.map((skill) => <li>{skill}</li>)}
+      </ul>
+    </section>
+
+    <section id="projects" class="showcase reveal">
+      <div class="section-intro">
+        <span>{portfolio.labels.selectedSystems}</span>
+        <h2>{portfolio.labels.productionWork}</h2>
+        <p>{portfolio.labels.systemsIntro}</p>
+      </div>
+      <div class="project-grid">
+        {portfolio.systems.map((system, index) => (
+          <article class="project-card">
+            <div class={`project-visual visual-${index + 1}`} aria-hidden="true">
+              <span>{String(index + 1).padStart(2, '0')}</span>
+            </div>
+            <div class="project-content">
+              <div class="project-heading">
+                <h3>{system.name}</h3>
+                <span>{system.status}</span>
+              </div>
+              <p>{system.description}</p>
+              <ul>
+                {system.technologies.map((technology) => <li>{technology}</li>)}
+              </ul>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <h2>{portfolio.labels.certifications}</h2>
+      <ul class="certification-list">
+        {portfolio.certifications.map((certification) => <li>{certification}</li>)}
+      </ul>
+    </section>
+
+    <section id="contact" class="contact reveal">
+      <span>{portfolio.labels.contact}</span>
+      <h2>{portfolio.labels.getInTouch}</h2>
+      <p>{portfolio.labels.contactCopy}</p>
+      <div class="contact-links">
+        <a href={`mailto:${portfolio.email}`}>{portfolio.labels.emailMe}</a>
+        <a href={portfolio.linkedinUrl} target="_blank" rel="noreferrer">LinkedIn ↗</a>
+        <a href={portfolio.githubUrl} target="_blank" rel="noreferrer">GitHub ↗</a>
+      </div>
+    </section>
+  </main>
+</Layout>

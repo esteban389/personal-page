@@ -1,33 +1,38 @@
 ---
 import '../styles/global.css';
-import { portfolio } from '../data/portfolio';
+import DockIcon from '../components/DockIcon.astro';
+import type { Portfolio } from '../data/portfolio';
 
 interface Props {
-  title?: string;
-  description?: string;
+  portfolio: Portfolio;
 }
 
-const {
-  title = `${portfolio.name} - ${portfolio.role}`,
-  description = portfolio.description,
-} = Astro.props;
-const canonicalUrl = new URL(Astro.url.pathname, portfolio.siteUrl);
+const { portfolio } = Astro.props;
+const isSpanish = portfolio.locale === 'es';
+const canonicalPath = isSpanish ? '/es/' : '/';
+const canonicalUrl = new URL(canonicalPath, portfolio.siteUrl);
+const alternatePath = isSpanish ? '/' : '/es/';
+const title = `${portfolio.name} - ${portfolio.role}`;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={portfolio.locale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="description" content={description} />
+    <meta name="description" content={portfolio.description} />
     <meta name="theme-color" content="#fafafa" />
     <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang="en" href={new URL('/', portfolio.siteUrl)} />
+    <link rel="alternate" hreflang="es" href={new URL('/es/', portfolio.siteUrl)} />
+    <link rel="alternate" hreflang="x-default" href={new URL('/', portfolio.siteUrl)} />
     <title>{title}</title>
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={portfolio.description} />
     <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content={isSpanish ? 'es_CO' : 'en_US'} />
     <meta name="twitter:card" content="summary" />
     <script is:inline>
       (() => {
@@ -40,16 +45,17 @@ const canonicalUrl = new URL(Astro.url.pathname, portfolio.siteUrl);
   <body>
     <div class="grid-wash" aria-hidden="true"></div>
     <div class="page-shell"><slot /></div>
-    <nav class="dock" aria-label="Primary navigation">
-      <a href="#top" aria-label="Home" title="Home">⌂</a>
-      <a href="#work" aria-label="Work experience" title="Work experience">▥</a>
-      <a href="#projects" aria-label="Projects" title="Projects">◇</a>
-      <a href={portfolio.blogUrl} target="_blank" rel="noreferrer" aria-label="Blog" title="Blog">B</a>
-      <span class="dock-separator"></span>
-      <a href={portfolio.githubUrl} target="_blank" rel="noreferrer" aria-label="GitHub" title="GitHub">GH</a>
-      <a href={portfolio.linkedinUrl} target="_blank" rel="noreferrer" aria-label="LinkedIn" title="LinkedIn">in</a>
-      <span class="dock-separator"></span>
-      <button class="theme-toggle" type="button" aria-label="Toggle color theme" title="Toggle theme">◐</button>
+    <nav class="dock" aria-label={portfolio.labels.home}>
+      <a href="#top" aria-label={portfolio.labels.home} title={portfolio.labels.home}><DockIcon name="home" /></a>
+      <a href="#work" aria-label={portfolio.labels.work} title={portfolio.labels.work}><DockIcon name="work" /></a>
+      <a href="#projects" aria-label={portfolio.labels.projects} title={portfolio.labels.projects}><DockIcon name="projects" /></a>
+      <a href={portfolio.blogUrl} target="_blank" rel="noreferrer" aria-label={portfolio.labels.blog} title={portfolio.labels.blog}><DockIcon name="blog" /></a>
+      <span class="dock-separator" aria-hidden="true"></span>
+      <a href={portfolio.githubUrl} target="_blank" rel="noreferrer" aria-label="GitHub" title="GitHub"><DockIcon name="github" /></a>
+      <a href={portfolio.linkedinUrl} target="_blank" rel="noreferrer" aria-label="LinkedIn" title="LinkedIn"><DockIcon name="linkedin" /></a>
+      <span class="dock-separator" aria-hidden="true"></span>
+      <a href={alternatePath} hreflang={isSpanish ? 'en' : 'es'} aria-label={portfolio.labels.language} title={portfolio.labels.language}><DockIcon name="language" /></a>
+      <button class="theme-toggle" type="button" aria-label={portfolio.labels.theme} title={portfolio.labels.theme}><DockIcon name="theme" /></button>
     </nav>
     <script is:inline>
       document.querySelector('.theme-toggle')?.addEventListener('click', () => {
