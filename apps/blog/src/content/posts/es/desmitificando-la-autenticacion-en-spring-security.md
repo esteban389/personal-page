@@ -3,6 +3,7 @@ title: 'Desmitificando la autenticación en Spring Security'
 description: 'Un recorrido por la autenticación en Spring Security, sus providers, cadenas de filtros y la persistencia del contexto de seguridad.'
 pubDate: '2025-03-19'
 category: 'Artículos técnicos'
+heroImage: '../../../assets/spring-security-authentication-cover.webp'
 lang: 'es'
 translationKey: 'spring-security-authentication'
 homeFeatured: true
