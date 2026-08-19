@@ -33,7 +33,7 @@ export const portfolios = {
       'Backend engineer building reliable, data-heavy business systems with Java, Spring Boot, and MySQL.',
     greeting: 'Hi, I’m Esteban',
     about:
-      'I have nearly three years of experience building and operating production software used by nine institutions in Colombia. I work across backend services, data integrity, identity, reporting, production diagnosis, and delivery—and I step into the frontend when the product needs it.',
+      'I’m a backend-focused software engineer in Colombia. Since 2023, I’ve built and operated production systems with Java and Spring Boot, including a student information system used by nine Colombian institutions. My work spans data integrity, identity and access, reporting, production diagnosis, delivery, and the frontend work needed to ship complete solutions. I also write technical articles and notes about Java, Spring, security, and backend engineering.',
     labels: {
       home: 'Home',
       work: 'Work experience',
@@ -123,7 +123,7 @@ export const portfolios = {
       'Ingeniero backend que construye sistemas de negocio confiables e intensivos en datos con Java, Spring Boot y MySQL.',
     greeting: 'Hola, soy Esteban',
     about:
-      'Tengo casi tres años de experiencia construyendo y operando software en producción usado por nueve instituciones en Colombia. Trabajo en servicios backend, integridad de datos, identidad, reportes, diagnóstico en producción y entregas; también intervengo en el frontend cuando el producto lo necesita.',
+      'Soy un ingeniero de software enfocado en backend en Colombia. Desde 2023 construyo y opero sistemas en producción con Java y Spring Boot, incluido un sistema de información estudiantil usado por nueve instituciones colombianas. Mi trabajo abarca integridad de datos, identidad y acceso, reportes, diagnóstico en producción, entregas y el trabajo de frontend necesario para completar una solución. También escribo artículos técnicos y notas sobre Java, Spring, seguridad e ingeniería backend.',
     labels: {
       home: 'Inicio',
       work: 'Experiencia laboral',
