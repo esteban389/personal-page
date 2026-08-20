@@ -8,8 +8,6 @@ import { withBase } from '../utils/paths';
 import { serializeScriptJson } from '../utils/serialize-script-json';
 import { localizedPath, type Locale } from '../i18n';
 
-// Enable with PUBLIC_VERCEL_ANALYTICS=true.
-const analyticsEnabled = import.meta.env.PUBLIC_VERCEL_ANALYTICS === 'true';
 const commentsMode = import.meta.env.PUBLIC_GISCUS_MODE || config.comments.mode;
 const commentsEnabled = commentsMode === 'giscus' || commentsMode === 'giscus-custom';
 
@@ -195,6 +193,3 @@ const websiteJsonLd =
 
 <!-- JSON-LD (WebSite schema) -->
 {websiteJsonLd && <script is:inline type="application/ld+json" set:html={websiteJsonLd} />}
-
-<!-- Vercel Analytics (opt-in: PUBLIC_VERCEL_ANALYTICS=true) -->
-{analyticsEnabled && <script is:inline defer src="/_vercel/insights/script.js" />}
