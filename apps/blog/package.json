@@ -30,8 +30,10 @@
     "astro": "astro",
     "check": "astro check",
     "format": "prettier --write \"src/**/*.{astro,ts,css,md,mdx}\"",
-    "lint": "eslint \"src/**/*.{js,ts,astro}\" \"*.mjs\"",
-    "lint:css": "stylelint \"src/**/*.{css,astro}\""
+    "lint": "eslint \"src/**/*.{js,ts,astro}\" \"scripts/**/*.mjs\" \"*.mjs\"",
+    "lint:css": "stylelint \"src/**/*.{css,astro}\"",
+    "syndicate": "node --env-file-if-exists=.env.local scripts/syndication/syndicate.mjs",
+    "test:syndication": "node --test scripts/syndication/*.test.mjs"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.2.2",

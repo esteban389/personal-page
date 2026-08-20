@@ -22,6 +22,22 @@ const posts = defineCollection({
       homeHeroOrder: z.number().int().positive().optional(),
       homeOrder: z.number().int().positive().optional(),
       draft: z.boolean().default(false),
+      syndication: z
+        .object({
+          dev: z
+            .object({
+              tags: z.array(z.string().min(1)).min(1).max(4),
+              series: z.string().min(1).optional(),
+              articleId: z.number().int().positive().optional(),
+            })
+            .optional(),
+          medium: z
+            .object({
+              topics: z.array(z.string().min(1)).min(1).max(5),
+            })
+            .optional(),
+        })
+        .optional(),
     }),
 });
 

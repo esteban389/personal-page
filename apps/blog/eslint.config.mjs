@@ -7,9 +7,13 @@ export default [
   ...tseslint.configs.recommended,
   ...astroPlugin.configs.recommended,
   {
-    files: ['*.mjs', 'src/**/*.js'],
+    files: ['*.mjs', 'scripts/**/*.mjs', 'src/**/*.js'],
     languageOptions: {
       globals: {
+        AbortSignal: 'readonly',
+        console: 'readonly',
+        fetch: 'readonly',
+        process: 'readonly',
         Response: 'readonly',
         URL: 'readonly',
       },
