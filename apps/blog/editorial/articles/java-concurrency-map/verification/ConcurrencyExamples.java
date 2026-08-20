@@ -1,6 +1,5 @@
 package verification;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -9,12 +8,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Logger;
 import java.util.stream.IntStream;
-import verification.ImportExample;
 
 public final class ConcurrencyExamples {
-    private final static Logger logger = Logger.getLogger(ConcurrencyExamples.class.getName());
     record Dashboard(String profile, List<String> orders) {}
     record PersonalizedDashboard(
             String profile,
@@ -39,31 +35,30 @@ public final class ConcurrencyExamples {
 
     static Dashboard loadDashboardWithFutures()
             throws InterruptedException, ExecutionException {
-        logger.info("Loading dashboard with futures...");
         try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {
-            Instant start = Instant.now();
-            logger.info("Submitting tasks... " + start);
             Future<String> profile = executor.submit(ConcurrencyExamples::loadProfile);
             Future<List<String>> orders = executor.submit(ConcurrencyExamples::loadOrders);
 
-            logger.info("Waiting for results...");
             return new Dashboard(profile.get(), orders.get());
         }
     }
 
-    static Dashboard loadDashboardWithPipeline() {
-        logger.info("Loading dashboard with pipeline...");
+    static Dashboard loadDashboardWithImmediateGets()
+            throws InterruptedException, ExecutionException {
         try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {
-            Instant start = Instant.now();
-            logger.info("Submitting tasks... " + start);
+            String profile = executor.submit(ConcurrencyExamples::loadProfile).get();
+            List<String> orders = executor.submit(ConcurrencyExamples::loadOrders).get();
+
+            return new Dashboard(profile, orders);
+        }
+    }
+
+    static String loadProfileLabelWithPipeline() {
+        try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {
             CompletableFuture<String> profile =
                     CompletableFuture.supplyAsync(ConcurrencyExamples::loadProfile, executor);
-            CompletableFuture<List<String>> orders =
-                    CompletableFuture.supplyAsync(ConcurrencyExamples::loadOrders, executor);
 
-            var result = profile.thenCombine(orders, Dashboard::new).join();
-            logger.info("Dashboard loaded in " + Instant.now().minusMillis(start.toEpochMilli()));
-            return result;
+            return profile.thenApply(name -> "Customer: " + name).join();
         }
     }
 
@@ -123,11 +118,26 @@ public final class ConcurrencyExamples {
                 .sum();
     }
 
+    static final class DashboardPublication {
+        private Dashboard publishedDashboard;
+        private volatile boolean dashboardReady;
+
+        void publish(Dashboard value) {
+            publishedDashboard = value;
+            dashboardReady = true;
+        }
+
+        Dashboard readIfReady() {
+            return dashboardReady ? publishedDashboard : null;
+        }
+    }
+
     public static void main(String[] args) throws Exception {
         assert loadDashboardWithFutures()
                 .equals(new Dashboard("Ada", List.of("A-100", "A-101")));
-        assert loadDashboardWithPipeline()
+        assert loadDashboardWithImmediateGets()
                 .equals(new Dashboard("Ada", List.of("A-100", "A-101")));
+        assert loadProfileLabelWithPipeline().equals("Customer: Ada");
         assert loadPersonalizedDashboardWithPipeline()
                 .equals(new PersonalizedDashboard(
                         "Ada",
@@ -140,7 +150,20 @@ public final class ConcurrencyExamples {
         assert permits.availablePermits() == 2;
 
         assert sumSquaresInParallel(List.of(1, 2, 3, 4)) == 30;
-        new ImportExample().hello();
+
+        DashboardPublication publication = new DashboardPublication();
+        Dashboard expectedDashboard = new Dashboard("Ada", List.of("A-100", "A-101"));
+        Thread publisher = Thread.startVirtualThread(() -> publication.publish(expectedDashboard));
+        Dashboard visibleDashboard;
+        do {
+            visibleDashboard = publication.readIfReady();
+            if (visibleDashboard == null) {
+                Thread.onSpinWait();
+            }
+        } while (visibleDashboard == null);
+        assert visibleDashboard.equals(expectedDashboard);
+        publisher.join();
+
         System.out.println("All concurrency examples passed.");
     }
 }

@@ -20,14 +20,16 @@ during style selection and commission. They are not additional personal testimon
 - Include: the sequential dashboard example, the responsibility map, and the
   concurrency-versus-parallelism distinction only to the depth needed later. Add a
   brief pre-heading orientation before the example without inventing personal
-  experience or announcing a generic tutorial.
+  experience or announcing a generic tutorial. Give the first-time reader a
+  concrete learning order after the map.
 - Exclude: generic history of Java concurrency, dramatic claims about difficulty,
   and any claim that the categories never overlap.
 - Relevant claim IDs: C-01.
 
 ### Questions for Esteban
 
-- None for drafting. Final title remains a review-package decision.
+- None. Esteban selected `How Java's Concurrency APIs Fit Together` during the
+  review package.
 
 ## Tasks describe work
 
@@ -37,9 +39,10 @@ during style selection and commission. They are not additional personal testimon
 
 ### Expansion boundaries
 
-- Include: `Runnable`, `Callable<V>`, and two tiny scenario-based declarations.
-- Exclude: direct `Thread` lifecycle tutorial and claims that a task is always run
-  asynchronously.
+- Include: `Runnable`, `Callable<V>`, two tiny scenario-based declarations, and two
+  sentences placing direct `Thread` ownership.
+- Exclude: a direct `Thread` lifecycle tutorial and claims that a task is always
+  run asynchronously.
 - Relevant claim IDs: C-02.
 
 ### Questions for Esteban
@@ -56,7 +59,8 @@ during style selection and commission. They are not additional personal testimon
 ### Expansion boundaries
 
 - Include: `Executor`, `ExecutorService`, lifecycle, a verified dashboard excerpt,
-  and a narrow virtual-thread explanation.
+  a contrasting immediate-`get()` fragment, and a narrow virtual-thread
+  explanation.
 - Exclude: executor factory catalog, tuning rules, throughput measurements, and any
   suggestion that virtual threads are faster CPU threads.
 - Relevant claim IDs: C-03, C-04, C-05, C-20, C-21, C-22.
@@ -77,10 +81,12 @@ during style selection and commission. They are not additional personal testimon
 ### Expansion boundaries
 
 - Include: `get()`, attempted cancellation, the case where plain `Future` remains
-  adequate, and the verified personalized-dashboard graph. Profile and orders
-  start independently, recommendations depend on profile through `thenCompose`,
-  the dashboard depends on profile and orders through `thenCombine`, and one
-  boundary `join()` awaits the final combination.
+  adequate, a small `thenApply` transformation, and the verified
+  personalized-dashboard graph. Profile and orders start independently,
+  recommendations depend on profile through `thenCompose`, the dashboard depends
+  on profile and orders through `thenCombine`, and one boundary `join()` awaits the
+  final combination. Keep continuation scheduling in a source note rather than the
+  beginner explanation.
 - Exclude: a full error-handling guide, timeout matrix, or a universal preference
   between direct waiting and asynchronous composition.
 - Relevant claim IDs: C-06, C-07, C-08.
@@ -100,7 +106,8 @@ during style selection and commission. They are not additional personal testimon
 ### Expansion boundaries
 
 - Include: a `volatile` increment counterexample, `synchronized`, `Lock`,
-  `AtomicInteger`, and concrete happens-before guarantees.
+  `AtomicInteger`, a one-time volatile publication example, and concrete
+  happens-before guarantees.
 - Exclude: a formal Java Memory Model derivation, lock-free algorithm internals,
   and claims that atomics can protect multi-field invariants.
 - Relevant claim IDs: C-09, C-10, C-11, C-12, C-13, C-17.

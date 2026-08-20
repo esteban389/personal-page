@@ -5,7 +5,8 @@ pubDate: '2026-08-20'
 category: 'Technical Articles'
 lang: 'en'
 translationKey: 'java-concurrency-map'
-draft: true
+heroImage: '../../assets/posts/java-concurrency-map/responsibility-cabinet-v1.png'
+draft: false
 ---
 
 A concurrency problem can begin with an ordinary requirement: let two independent
@@ -62,6 +63,11 @@ These groups overlap. `CompletableFuture`, for example, represents a result and 
 also arrange dependent execution. Treat the groups as questions for locating a
 problem rather than rigid boxes for classifying every type.
 
+On a first pass, focus on tasks, executors, futures, and the shared-state sections.
+Learn queues and semaphores as named solutions for handoff and limits. Leave
+`CyclicBarrier`, fork/join, and continuation-scheduling rules as landmarks until a
+program gives you one of those problems.
+
 One vocabulary distinction will help throughout the map. Concurrent tasks make
 progress during overlapping periods; they do not have to execute at the same
 instant. Parallel work does execute at the same instant. A single CPU core can
@@ -91,6 +97,12 @@ determines the execution policy.
 
 The code that describes a cache refresh stays unchanged whether the application
 runs it immediately, schedules it in a pool, or starts a virtual thread for it.
+
+Use `Thread` directly when the program intentionally owns one thread's identity or
+lifecycle, such as naming it, installing its uncaught-exception handler, or joining
+that specific thread. An executor is the better fit when thread creation,
+scheduling, and lifecycle belong to an execution policy rather than the task
+itself.[^thread-api]
 
 ## Executors decide how work runs
 
@@ -127,6 +139,17 @@ can therefore overlap when the executor can run them concurrently. Submission
 alone is not a guarantee of overlap; the executor owns that policy and may be
 constrained by available resources.
 
+The following order prevents the two dashboard operations from overlapping:
+
+```java
+var profile = executor.submit(this::loadProfile).get();
+var orders = executor.submit(this::loadOrders).get();
+```
+
+The first `get()` may block before the second line can submit `loadOrders`. Keep
+the handles first and the waits after both submissions when the operations are
+independent.
+
 Virtual threads became a final feature in Java 21. They are `Thread` instances
 scheduled by the JDK rather than permanent one-to-one wrappers around operating
 system threads. They suit thread-per-task code with many concurrent operations that
@@ -151,6 +174,20 @@ happened.
 `CompletableFuture<T>` becomes useful when later work should depend on earlier
 results. It implements both `Future<T>` and `CompletionStage<T>`, which adds
 operations for transforming and combining completed stages.
+
+Start with one result and one transformation:
+
+```java
+CompletableFuture<String> profile =
+        CompletableFuture.supplyAsync(this::loadProfile, executor);
+
+CompletableFuture<String> label =
+        profile.thenApply(name -> "Customer: " + name);
+```
+
+After `profile` completes normally, `thenApply` passes its result to the function
+and produces another stage containing the label. No `get()` separates the two
+steps.[^completable-future-api]
 
 If we translated the earlier two-input dashboard directly, `CompletableFuture`
 would mostly look like a syntax swap around the same fixed fan-out. Add one real
@@ -188,11 +225,9 @@ try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
 }
 ```
 
-The example passes the executor explicitly to each asynchronous supplier because
+The asynchronous suppliers receive the executor explicitly because
 `CompletableFuture` async methods without one normally use
-`ForkJoinPool.commonPool()`.[^completable-future-api] The non-async `thenCompose`
-and `thenCombine` calls do not independently schedule their continuation bodies on
-that executor.
+`ForkJoinPool.commonPool()`.[^completable-future-api]
 
 `profile` and `orders` start independently. After `profile` completes normally,
 `thenCompose` invokes the recommendation function and flattens the
@@ -204,8 +239,8 @@ Plain `Future` and `CompletableFuture` overlap, but they encourage different con
 flow. Plain `Future` remains adequate for a short, fixed set of independent tasks
 when the caller can submit them together and wait at one clear boundary. Completion
 stages help when one result starts later work or several branches must converge.
-Error policy, cancellation, timeouts, and executor ownership still need explicit
-design; composition does not decide them for you.
+The example stops at composition. Production code still needs an explicit policy
+for errors, cancellation, timeouts, and executor ownership.
 
 ## Shared state has three separate questions
 
@@ -236,11 +271,33 @@ Shared-state safety involves three separate questions:
 - **Ordering:** what constrains the order in which actions become observable across
   threads?
 
+Consider a one-time handoff in which one thread publishes a dashboard and another
+reads it:
+
+```java
+Dashboard publishedDashboard;
+volatile boolean dashboardReady;
+
+void publish(Dashboard value) {
+    publishedDashboard = value;
+    dashboardReady = true;
+}
+
+Dashboard readIfReady() {
+    return dashboardReady ? publishedDashboard : null;
+}
+```
+
+The dashboard write occurs before the volatile flag write in the publishing
+thread. If another thread later reads `dashboardReady` as `true`, the Java Memory
+Model's volatile happens-before rule makes the earlier dashboard write visible to
+that reader.[^jls-happens-before] The flag does not lock either method or make a
+compound update atomic.
+
 `synchronized` can provide mutual exclusion for a critical section and a
 visibility relationship around the same monitor. When one thread unlocks a
-monitor, that action happens-before a later lock of the same monitor. The phrase
-"happens-before" names a Java Memory Model guarantee: writes before the first
-action become visible through the ordered synchronization relationship. The
+monitor, that action happens-before a later lock of the same monitor, so writes
+before the unlock become visible through that synchronization relationship. The
 `java.util.concurrent` memory-consistency summary also documents similar guarantees
 for task submission, successful `Future.get()`, concurrent collections, and
 synchronizers.[^juc-memory-consistency]
@@ -354,10 +411,11 @@ The dashboard spends time waiting. A sum over a large collection presents a
 different problem: divide computation over data and combine the partial results.
 
 `ForkJoinPool` is an `ExecutorService` built around work-stealing and tasks that can
-split into smaller tasks. Its contract warns that blocked I/O and unmanaged
-synchronization are not guaranteed compensating threads.[^fork-join-pool-api] That
-makes it a better conceptual fit for decomposable computation than for replacing
-the waiting-oriented dashboard executor.
+split into smaller tasks. Its contract does not guarantee compensating threads for
+blocked I/O or unmanaged synchronization.[^fork-join-pool-api] Do not treat a
+fork/join pool as the default executor for many blocking network calls. It is a
+better conceptual fit for decomposable computation than for replacing the
+waiting-oriented dashboard executor.
 
 Parallel streams expose data-parallel execution through the stream API:
 
@@ -409,6 +467,8 @@ the next piece of documentation or testing the program needs.
 
 [^callable-api]: [`Callable<V>` API documentation](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/Callable.html)
 
+[^thread-api]: [`Thread` API documentation](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Thread.html)
+
 [^executor-api]: [`Executor` API documentation](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/Executor.html)
 
 [^executor-service-api]: [`ExecutorService` API documentation](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/ExecutorService.html)
@@ -417,9 +477,11 @@ the next piece of documentation or testing the program needs.
 
 [^future-api]: [`Future<V>` API documentation](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/Future.html)
 
-[^completable-future-api]: [`CompletableFuture<T>` API documentation](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/CompletableFuture.html)
+[^completable-future-api]: [`CompletableFuture<T>` API documentation](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/CompletableFuture.html) and [`CompletionStage<T>` API documentation](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/CompletionStage.html). The `CompletableFuture` policy section also explains that non-async dependent actions may run in the thread that completes the current stage or another caller of a completion method.
 
 [^jls-memory-actions]: [Java Language Specification, §17.4.2: Actions](https://docs.oracle.com/javase/specs/jls/se25/html/jls-17.html#jls-17.4.2)
+
+[^jls-happens-before]: [Java Language Specification, §17.4.5: Happens-before Order](https://docs.oracle.com/javase/specs/jls/se25/html/jls-17.html#jls-17.4.5)
 
 [^juc-memory-consistency]: [`java.util.concurrent` memory-consistency properties](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/package-summary.html#MemoryConsistency)
 

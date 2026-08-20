@@ -1,9 +1,12 @@
 # Code verification
 
-`ConcurrencyExamples.java` executes the two dashboard variants, the atomic
-completion counter, the semaphore acquire/release pattern, and the parallel sum
-of squares. The article may show smaller excerpts of those examples, but their
-concurrency mechanisms must remain equivalent to this source.
+`ConcurrencyExamples.java` executes the dashboard with two submissions before
+waiting and the contrasting immediate-`get()` version. It also executes the
+one-stage `thenApply` transformation, the personalized-dashboard dependency graph,
+the volatile dashboard publication, the atomic completion counter, the semaphore
+acquire/release pattern, and the parallel sum of squares. The article may show
+smaller excerpts, but their concurrency mechanisms must remain equivalent to this
+source.
 
 It also executes a personalized-dashboard dependency graph. Profile and orders
 start independently on an explicit virtual-thread executor. Recommendations
@@ -27,8 +30,9 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.0.4+7-LTS-189, mixed mode, sharing)
 ## Command
 
 ```sh
-javac apps/blog/editorial/articles/java-concurrency-map/verification/ConcurrencyExamples.java
-java -ea -cp apps/blog/editorial/articles/java-concurrency-map/verification ConcurrencyExamples
+verification_dir="$(mktemp -d)"
+javac -d "$verification_dir" apps/blog/editorial/articles/java-concurrency-map/verification/ConcurrencyExamples.java
+java -ea -cp "$verification_dir" verification.ConcurrencyExamples
 ```
 
 ## Result
@@ -37,11 +41,9 @@ java -ea -cp apps/blog/editorial/articles/java-concurrency-map/verification Conc
 All concurrency examples passed.
 ```
 
-The exact commands were run again on 2026-08-20 after adding the
-personalized-dashboard dependency graph. The then-current source, which imports
-only JDK classes, compiled and completed with assertions enabled. This
-supersedes the reviewer's earlier observation of a transient unavailable
-third-party import.
+The exact compile and run commands were executed on 2026-08-20 after the
+junior-reader revision. The source imports only JDK classes, compiles into an
+isolated temporary directory, and completes with assertions enabled.
 
 The first compilation exposed a harness-only generic mismatch: the stream of
 `submit(completed::incrementAndGet)` calls produces `List<Future<Integer>>`, not

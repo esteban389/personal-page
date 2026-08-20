@@ -41,6 +41,38 @@ Publication-draft correction requested by Esteban after rereading the article:
   responsibility-based thesis, and make the beginner scope explicit. Keep the
   dashboard as the first concrete example.
 
+Junior-reader review supplied after the introductory revision:
+
+- The responsibility map, sequential dashboard opening, task-versus-thread
+  distinction, qualified virtual-thread guidance, shared-state examples, and final
+  decision table worked well.
+- The main problem is density after the first sections. The `CompletableFuture`
+  graph and Java Memory Model explanation move from beginner to intermediate
+  material too quickly.
+- Add one `thenApply` transformation before the dependency graph.
+- Add a concrete two-thread example before the abstract happens-before explanation.
+- Show the executor/Future mistake where each task is awaited immediately after
+  submission, which prevents the two dashboard calls from overlapping.
+- Give the reader an explicit learning order: understand some concepts now,
+  recognize others, and return to advanced details when needed.
+- Keep cancellation, error handling, timeouts, and executor ownership in view, but
+  do not expand this article into a full treatment of them.
+- Esteban approved the bounded revision plan based on this review. The source
+  review is preserved at
+  `/Users/esteban389/.codex/attachments/f11da076-0550-456f-9371-9c589f104abf/pasted-text.txt`.
+
+Final publication review supplied by Esteban:
+
+- `Thread` appears in the responsibility map but the article does not explain when
+  application code would use it directly.
+- Keep the executor-first architecture and do not add a manual-thread tutorial.
+- Resolve the beginner's question in one or two sentences: direct `Thread` use fits
+  code that intentionally owns one thread's identity or lifecycle; executors fit
+  application tasks whose creation, scheduling, and lifecycle belong to an
+  execution policy.
+- After this correction, Esteban considers the article finished and explicitly
+  authorized changing `draft` to `false`, committing, and pushing it.
+
 Approved thesis from the commission:
 
 > Java concurrency becomes manageable when you first identify the problem you are
@@ -84,22 +116,18 @@ Approved thesis from the commission:
 - Virtual threads and asynchronous pipelines solve overlapping but non-identical
   problems; avoid declaring one universally better.
 
-## Questions and uncertainties
+## Resolved publication decisions
 
-- Final title, description, category, and slug await the consolidated review.
-- Decide during drafting whether `CompletableFuture` needs executable code.
-- Selected correction: verify an executable `CompletableFuture` graph in which
+- The selected title is `How Java's Concurrency APIs Fit Together`; the final
+  description, category, and slug are recorded in the Astro post and status file.
+- The article includes an executable `CompletableFuture` graph in which
   recommendations depend on the profile while orders load independently.
-- Decide whether preview structured concurrency adds enough beginner value to
-  justify a sidebar.
-- Image concept and asset are intentionally unresolved.
-- Final title remains unresolved pending comparison of new options.
-- Inline links remain useful during editorial review. The publication pass must
-  convert source citations to footnotes and inspect the rendered footnote list.
-- A local renderer check on 2026-08-20 confirmed that the blog's current
-  `@astrojs/markdown-remark` setup turns `[^id]` references into a semantic
-  footnote section with backlinks. Final publication still needs visual checks,
-  especially for spacing and mobile layout.
+- Preview structured concurrency remains outside the article's beginner scope.
+- Esteban selected and approved image concept A, the responsibility cabinet, and
+  its generated asset.
+- Official sources appear as end footnotes. The final production build and mobile
+  inspection confirmed the semantic footnote list, numbering, wrapping, and
+  backlinks.
 
 ## Links, code, and source material
 

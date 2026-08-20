@@ -16,7 +16,8 @@ or performing parallel computation--and only then choose an API.
 - Central claim: The library becomes easier to navigate when its types are grouped
   by responsibility rather than memorized as a flat catalog.
 - Example or evidence: Three concise introductory paragraphs, a sequential
-  dashboard loader, and a compact seven-part map.
+  dashboard loader, a compact seven-part map, and a first-pass learning order that
+  separates core concepts from later landmarks.
 - Transition earned by this section: Before choosing a tool, separate the work from
   the mechanism that runs it.
 
@@ -26,7 +27,8 @@ or performing parallel computation--and only then choose an API.
 - Central claim: `Runnable` and `Callable<V>` describe tasks; they do not select or
   start a thread.
 - Example or evidence: A cache refresh as `Runnable` and a profile request as
-  `Callable<String>`.
+  `Callable<String>`, followed by a two-sentence boundary between intentional
+  direct `Thread` ownership and executor-managed application tasks.
 - Transition earned by this section: Once work is represented, an execution policy
   can decide where it runs.
 
@@ -38,7 +40,9 @@ or performing parallel computation--and only then choose an API.
   scheduling, and lifecycle, but the `Executor` contract does not promise
   asynchronous execution.
 - Example or evidence: The dashboard tasks are submitted before either result is
-  requested, using a virtual-thread-per-task executor.
+  requested, using a virtual-thread-per-task executor. A contrasting fragment
+  submits and immediately awaits each task, preventing the two dashboard calls
+  from overlapping.
 - Transition earned by this section: Submission produces handles to work that may
   still be running, which introduces result handling.
 
@@ -49,9 +53,11 @@ or performing parallel computation--and only then choose an API.
 - Central claim: `Future` supports waiting, retrieval, status, and attempted
   cancellation; `CompletableFuture` also models a graph of dependent stages.
 - Example or evidence: The dashboard is first assembled from two `Future` values.
-  The composition example then adds recommendations that depend on profile while
-  orders remain independent, combines profile and orders into a dashboard, and
-  joins once after the dashboard and recommendations converge.
+  A small `thenApply` example first transforms one completed result without an
+  intermediate `get()`. The composition example then adds recommendations that
+  depend on profile while orders remain independent, combines profile and orders
+  into a dashboard, and joins once after the dashboard and recommendations
+  converge. Advanced continuation-scheduling detail stays in a source footnote.
 - Transition earned by this section: Choosing an executor or result abstraction
   does not make shared mutations safe.
 
@@ -62,7 +68,9 @@ or performing parallel computation--and only then choose an API.
 - Central claim: Atomicity, visibility, and ordering are different concerns.
   `synchronized`, `volatile`, locks, and atomics provide different guarantees.
 - Example or evidence: A completion counter; `volatile int` is rejected because
-  `counter++` is a compound update; the executable `AtomicInteger` version is shown.
+  `counter++` is a compound update; a one-time dashboard handoff makes volatile
+  publication and happens-before concrete; the executable `AtomicInteger` version
+  is shown.
 - Transition earned by this section: Protecting one variable still does not answer
   how shared data structures or multi-step state transitions should work.
 
@@ -138,14 +146,15 @@ or performing parallel computation--and only then choose an API.
   - Start With the Problem: A Guide to Java Concurrency APIs
 - `CompletableFuture` receives one verified dependency-graph example. A longer
   treatment of error handling, timeouts, and executor selection would unbalance
-  this article.
-- Inline source links remain in the editorial draft for verification. Converting
-  them to end footnotes is deferred until final publication preparation.
+  this article. A one-stage `thenApply` example now precedes the graph so the reader
+  meets transformation before dependency and convergence.
+- Inline source links remain in the editorial draft for verification. The final
+  Astro post converts them to inspected end footnotes.
 - Structured concurrency is omitted. In Java 25 it remains a preview API, and a
   preview sidebar would add version caveats before beginners have learned the
   stable groups.
-- Hero-image structure, sourcing, and generation remain deferred until the final
-  publication stage at Esteban's request.
+- Esteban selected concept A, the responsibility cabinet, and approved the final
+  generated asset and alt-text intent during publication preparation.
 
 ## Resolved publication decisions
 

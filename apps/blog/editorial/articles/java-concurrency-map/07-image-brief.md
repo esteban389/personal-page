@@ -1,8 +1,9 @@
 # Post image brief
 
 Concept exploration was reopened for final article preparation. Esteban selected
-Concept A and explicitly authorized generation. The generated asset and final alt
-text still require his approval before the image gate can close.
+Concept A and explicitly authorized generation. His final instruction to consider
+the article finished approved the existing generated asset and recorded alt text
+for publication.
 
 The post image is required by the editorial workflow because it carries the
 article across homepage cards, related-post cards, and social previews. Approve
@@ -166,20 +167,23 @@ the concept before generating or selecting the final asset.
 
 - Source file: Generated candidate at
   `apps/blog/src/assets/posts/java-concurrency-map/responsibility-cabinet-v1.png`
-  (`1672 × 941` PNG). It is not wired into frontmatter pending approval.
-- Final alt text: Proposed, awaiting approval: "An open metal-and-wood specimen
+  (`1672 × 941` PNG). It is wired into the final post frontmatter.
+- Final alt text: Approved: "An open metal-and-wood specimen
   cabinet with a spool, lockbox, and measuring tools arranged around a central
   drawer holding a wooden token."
 - Attribution or license, when applicable: Generated with the built-in OpenAI image
   tool from the recorded prompt; no external source or attribution requirement.
 - Homepage/card crop checked: Composition preflight passed: the cabinet, open
   central drawer, and token occupy the middle half, while the lower 30% is quiet.
-  Actual rendered card crops remain unchecked until the asset is approved and
-  wired.
+  The rendered desktop homepage feature card keeps the full cabinet legible and
+  preserves the central open drawer and token. The mobile homepage uses the
+  text-only feature treatment, so it does not introduce a second crop.
 - Social preview checked: Source dimensions and 16:9 composition pass preflight.
-  Actual rendered social metadata remains unchecked until wiring.
+  The production HTML emits the source image in Open Graph, Twitter, and Article
+  JSON-LD metadata with the expected 1672-by-941 dimensions.
 
 ## Approval checkpoint
 
 - [x] Esteban approved the selected concept.
-- [ ] Esteban approved the final image and alt text.
+- [x] Esteban approved the final image and alt text as part of the final publication
+      instruction.

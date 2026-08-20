@@ -1,12 +1,14 @@
 # Editorial review
 
-Article-text review result: **Reopened for approval**. Esteban found that the
-approved version reached its first example before providing enough introductory
-orientation. The revision now adds a short pre-heading introduction, keeps the
-dashboard as the first concrete example, and removes the repeated API-catalog
-setup from that section. The technical body remains unchanged. The current
-verification harness and final image approval remain separate
-publication-readiness blockers.
+Article-text review result: **Approved for publication**. A junior-reader review of
+the introductory revision praised the responsibility map and technical caveats but
+found that the `CompletableFuture` graph and Java Memory Model material raised the
+difficulty too quickly. Esteban approved a bounded revision: add a learning order,
+an immediate-`get()` failure case, a one-stage `thenApply` example, and a concrete
+volatile-publication example without expanding the article into a handbook. The
+new claims were verified. Esteban then accepted one last review about direct
+`Thread` use, approved the finished article and existing image, and authorized
+publication, commit, and push.
 
 This review covers `00-brief.md` through `06-draft.md`, the verification harness
 and README, the repository style and rubric, the image guide, and the `no-ai-slop`
@@ -51,59 +53,63 @@ syntax swap” names the concrete weakness in the earlier example, and “Plain
 a winner. Neither passage uses generic significance claims, faux insight, or a
 summary transition.
 
+The junior-reader revision also passes the audit. “On a first pass” names a
+specific learning order instead of offering generic encouragement. The
+immediate-`get()` passage explains the blocking program order directly. The
+`thenApply` and volatile-publication passages introduce one mechanism each before
+returning to the existing advanced examples. Moving non-async continuation
+scheduling to the API footnote removes an intermediate detail from the main flow
+without dropping its source or caveat. No new banned vocabulary, binary-contrast
+cadence, faux-insight setup, importance puffery, or summary ending was introduced.
+
 ## Blockers
 
 None for the editorial draft.
 
 ## Publication-readiness blockers
 
-### Publication readiness: generated image still needs final approval and wiring
-
-- **Location:** `07-image-brief.md` and the publication-readiness rubric.
-- **Evidence:** Esteban selected the responsibility-cabinet direction and authorized
-  generation. A refined `1672 × 941` candidate and proposed alt text now exist,
-  but Esteban has not approved the final asset or alt text. Actual homepage/card
-  and social crops remain unchecked because the asset is not wired.
-- **Action:** Obtain final asset and alt-text approval, wire the image into
-  frontmatter, then inspect the actual homepage/card and social crops.
-
-This is a publication blocker, not a blocker to revising or approving the text as
-an editorial draft.
-
-### Restore the standalone Java verification harness
-
-- **Location:** `verification/ConcurrencyExamples.java`, its missing
-  `ImportExample` dependency, and `verification/README.md`.
-- **Evidence:** `ImportExample.java` is absent, but `ConcurrencyExamples.java`
-  still imports `verification.ImportExample` and calls `new ImportExample()`.
-  An isolated compile on 2026-08-20 fails with two `cannot find symbol` errors at
-  those references. The README's passing result and command therefore do not
-  reproduce the current harness state.
-- **Action:** Remove the unrelated helper import/call or restore the required
-  source, then run and record a command that matches the packaged source layout.
-  Do not treat the previous passing run as current evidence.
-
-This blocker concerns the verification artifact. It does not reopen the approved
-article claims, dependency graph, or displayed code excerpt, which were reviewed
-separately against C-07a through C-07c and the official Java contracts.
+None. Final rendered route, search, card crop, and social metadata checks are
+recorded during the publication pass.
 
 ## Publication-preparation checks
 
-- **Astro draft — Pass.** The prepared post is intentionally `draft: true`; its
-  metadata and body match the revised editorial artifact. Human approval of the
-  new introduction is pending.
-- **Sources — Pass.** All 17 inline citations were converted to rendered footnotes.
-  The local render check confirmed semantic footnote output and backlinks.
+- **Astro publication state — Pass.** The post is `draft: false`; its metadata and
+  body match the approved editorial artifact.
+- **Sources — Pass.** All 19 inline citations render as end footnotes. Mobile
+  inspection confirmed readable wrapping, numbered anchors, and backlinks.
 - **Text and formatting — Pass.** The publication copy passed the passage-level
   no-ai-slop audit and the relevant Prettier check.
-- **Application validation — Pass.** Astro check and the production build passed
-  with the post still marked as a draft.
-- **Deferred checks.** Generated-route inspection, Pagefind inclusion, and mobile
-  visual inspection remain deferred until publication preparation advances beyond
-  `draft: true`. Footnote spacing and backlink behavior should be included in the
-  mobile visual check.
+- **Code verification — Pass.** On Java 25.0.4, the packaged harness compiled into
+  an isolated temporary directory and completed with assertions enabled. It now
+  executes the immediate-`get()`, `thenApply`, dependency-graph, and volatile
+  publication examples and imports only JDK classes.
+- **Application validation — Pass.** Astro check, ESLint, Stylelint, and the
+  production build passed with `draft: false`.
+- **Rendered publication checks — Pass.** The generated route renders at
+  `/posts/how-java-concurrency-apis-fit-together/`; Pagefind returns it for
+  `concurrency`; the desktop feature-card crop preserves the cabinet and central
+  drawer; and mobile article and footnote layouts remain readable. Open Graph,
+  Twitter, and Article JSON-LD metadata point to the generated hero image.
 
 ## Resolved follow-up findings
+
+### Restore the standalone Java verification harness — Resolved
+
+- **Location:** `verification/ConcurrencyExamples.java` and `verification/README.md`.
+- **Evidence:** The stale `ImportExample` dependency and call were removed. The
+  documented packaged compile and run commands completed on Java 25.0.4 with the
+  output `All concurrency examples passed.`
+- **Action:** Resolved. Keep the README's coverage list aligned with displayed
+  examples when snippets change.
+
+### Add beginner stepping stones before advanced mechanisms — Resolved
+
+- **Location:** The responsibility map, Executors, Results, and Shared state.
+- **Evidence:** The revision adds a first-pass learning order, contrasts immediate
+  waiting with submit-both-first, introduces `thenApply` before composition, and
+  derives the volatile publication guarantee from program order plus the volatile
+  happens-before edge.
+- **Action:** Resolved in the draft. Esteban approved the final claim register.
 
 ### Describe `thenCompose` as dependency triggering, not waiting — Resolved
 
@@ -140,6 +146,19 @@ separately against C-07a through C-07c and the official Java contracts.
 
 ## User-directed revision checks
 
+### Direct `Thread` placement — Pass
+
+- The final two-sentence addition answers when direct ownership is appropriate
+  without adding a `new Thread(...).start()` tutorial.
+- The first sentence ties direct use to a concrete thread's identity and lifecycle.
+  The second keeps executor selection aligned with the article's execution-policy
+  model.
+- Java SE 25 documents the cited `Thread` lifecycle controls and `Executor`'s
+  separation of task submission from execution mechanics. The addition maps to
+  C-02a and introduces no unsupported prevalence or performance claim.
+- The passage-level audit found no generic setup, faux insight, binary-contrast
+  formula, importance language, or extra section scaffolding.
+
 ### `CompletableFuture` dependency graph — Pass
 
 - The diagram and code agree: profile and orders start independently; profile also
@@ -149,10 +168,8 @@ separately against C-07a through C-07c and the official Java contracts.
   `CompletableFuture<List<String>>`; composition flattens that returned stage.
 - Both `thenCombine` calls are correct joins between branches that already exist.
   The final `.join()` is the single explicit wait at the request boundary.
-- The article excerpt implements the reviewed graph. The current harness still
-  contains the equivalent assertions, but its unrelated missing-helper reference
-  prevents a fresh execution; that publication-readiness blocker is recorded
-  above without reopening the excerpt review.
+- The article excerpt implements the reviewed graph, and the restored harness
+  executes the equivalent assertions successfully.
 
 ### Comparison with plain `Future` — Pass
 
@@ -193,12 +210,12 @@ representative measurement.
   waiting-oriented dashboard from data-parallel work, and the mistake checks in
   the final table form a beginner-oriented synthesis rather than a flat rewrite of
   API documentation.
-- **Structure and length — Pass.** At roughly 2,680 words, the draft sits between
+- **Structure and length — Pass.** At roughly 2,980 words, the draft sits between
   a reference sheet and a handbook. The dashboard traces tasks, execution, and
-  results; smaller counter, cache, queue, semaphore, and reduction examples cover
-  the branches that the dashboard cannot honestly demonstrate.
+  results; smaller publication, counter, cache, queue, semaphore, and reduction
+  examples cover the branches that the dashboard cannot honestly demonstrate.
 - **Claim coverage — Pass.** Claims C-01 through C-22, including C-07a through
-  C-07c, are represented with their
+  C-07d and C-10a, are represented with their
   opinion/inference boundaries intact. Live checks of the official sources support
   the executor policy, `Future` cancellation, `CompletableFuture` composition and
   default executor, Java Memory Model, concurrent collection, synchronizer,
@@ -210,13 +227,13 @@ representative measurement.
 - **Ending — Pass.** The practice exercise applies the map without recapping every
   section or ending on a motivational slogan.
 - **Article graph review — Pass.** The diagram, displayed code, C-07a through
-  C-07c, and the official `CompletionStage` contracts agree. Current harness
-  execution is blocked separately by the missing `ImportExample` dependency and is
-  not reported as a passing check.
+  C-07d, and the official `CompletionStage` contracts agree. The restored harness
+  compiles and passes with assertions enabled.
 - **Beginner corrections — Pass.** The revision places the Java 21+ baseline before
   the first virtual-thread example, replaces the unexplained “races” wording with
-  observable shared-state behavior, and names `CyclicBarrier` in both the map and
-  coordination section.
+  observable shared-state behavior, names `CyclicBarrier` in both the map and
+  coordination section, and adds the four junior-reader stepping stones without
+  expanding the parallel-computation scope.
 
 ## Rejected findings and rationale
 
@@ -236,4 +253,5 @@ representative measurement.
 - [x] The mandatory LLM-pattern audit is complete.
 - [x] Material LLM-pattern findings are resolved or explicitly accepted by Esteban.
 - [x] All editorial-draft blockers are resolved.
-- [ ] Esteban approved the revised reviewed draft.
+- [x] Esteban approved the final claim register.
+- [x] Esteban approved the final reviewed draft and authorized publication.

@@ -2,18 +2,18 @@ schemaVersion: 1
 slug: java-concurrency-map
 workingTitle: "How Java's Concurrency APIs Fit Together"
 language: en
-stage: editing
+stage: published
 articleType: 'technical essay'
 
 approved:
   brief: true
   outline: true
   claims: true
-  draft: false
-  image: false
-  review: false
+  draft: true
+  image: true
+  review: true
 
 publish:
   category: 'Technical Articles'
-  heroImage: null
+  heroImage: '../../assets/posts/java-concurrency-map/responsibility-cabinet-v1.png'
   pubDate: '2026-08-20'
