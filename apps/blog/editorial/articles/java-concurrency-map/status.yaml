@@ -1,0 +1,19 @@
+schemaVersion: 1
+slug: java-concurrency-map
+workingTitle: "How Java's Concurrency APIs Fit Together"
+language: en
+stage: editing
+articleType: 'technical essay'
+
+approved:
+  brief: true
+  outline: true
+  claims: true
+  draft: false
+  image: false
+  review: false
+
+publish:
+  category: 'Technical Articles'
+  heroImage: null
+  pubDate: '2026-08-20'
