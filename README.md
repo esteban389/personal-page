@@ -26,6 +26,12 @@ packages/     # Reserved for code genuinely shared by multiple websites
 scripts/      # Repository maintenance utilities
 ```
 
+The blog also owns a repository-backed editorial workspace under
+`apps/blog/editorial`. It stores article briefs, evidence, drafts, and human
+approval state outside the Astro content collection. Repository-local AI workflow
+instructions—including deliberate editorial, quick-post, and post-image concept
+workflows—live under `.agents/skills`.
+
 ## Requirements
 
 - Node.js 22.12.0 or newer
@@ -46,7 +52,20 @@ pnpm check  # Run available type, code, and style checks
 pnpm build  # Build active websites
 ```
 
+Blog editorial work uses two additional root commands:
+
+```sh
+pnpm article:new <slug>    # Create a non-destructive article workspace
+pnpm article:check <slug>  # Validate its structure and report its state
+pnpm test:editorial        # Test the editorial CLI behavior
+```
+
 These commands process `apps/blog` and intentionally exclude `apps/interests`.
+
+Repository-local skills provide both a stage-by-stage editorial workflow and an
+optional `blog-quick-post` fast lane. The fast lane keeps the same review, image, and
+anti-LLM standards while reducing interaction to a commission and consolidated review
+package.
 
 ## Application contract
 
@@ -65,8 +84,9 @@ independent lockfiles.
 ## Validation
 
 Pull requests and pushes to `master` install the frozen workspace dependencies,
-run `pnpm check`, and run `pnpm build`. An application's own scripts remain the
-source of truth; the root only orchestrates them.
+run `pnpm check`, and run `pnpm build`. The check includes active-application
+validation and the editorial CLI behavior tests. An application's own scripts
+remain the source of truth; the root only orchestrates them.
 
 ## Tooling policy
 

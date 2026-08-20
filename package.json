@@ -8,9 +8,12 @@
     "starred-github-projects": "./scripts/getGithubStarredProjects.js"
   },
   "scripts": {
+    "article:new": "node scripts/editorial/new-article.mjs",
+    "article:check": "node scripts/editorial/check-article.mjs",
+    "test:editorial": "node --test scripts/editorial/article-cli.test.mjs",
     "dev": "pnpm --filter './apps/*' --filter '!@esteban/interests' --parallel --if-present -r dev",
     "build": "pnpm --filter './apps/*' --filter '!@esteban/interests' --if-present -r build",
-    "check": "pnpm run check:types && pnpm run lint",
+    "check": "pnpm run check:types && pnpm run lint && pnpm run test:editorial",
     "check:types": "pnpm --filter './apps/*' --filter '!@esteban/interests' --if-present -r check",
     "lint": "pnpm run lint:code && pnpm run lint:styles",
     "lint:code": "pnpm --filter './apps/*' --filter '!@esteban/interests' --if-present -r lint",
