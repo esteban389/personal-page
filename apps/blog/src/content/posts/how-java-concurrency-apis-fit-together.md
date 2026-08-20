@@ -7,6 +7,19 @@ lang: 'en'
 translationKey: 'java-concurrency-map'
 heroImage: '../../assets/posts/java-concurrency-map/responsibility-cabinet-v1.png'
 draft: false
+syndication:
+  dev:
+    tags:
+      - java
+      - concurrency
+      - programming
+      - beginners
+  medium:
+    topics:
+      - Java
+      - Concurrency
+      - Software Development
+      - Backend Development
 ---
 
 A concurrency problem can begin with an ordinary requirement: let two independent
