@@ -1,14 +1,24 @@
 ---
+import type { Locale } from '../i18n';
+import { getUiText } from '../ui';
 
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const tr = getUiText(locale).navigation;
 ---
 
 <button
   type="button"
   class="theme-toggle"
   id="theme-toggle"
-  aria-label="Toggle dark mode"
+  aria-label={tr.switchToDarkMode}
   aria-pressed="false"
-  title="Toggle dark mode"
+  title={tr.switchToDarkMode}
+  data-dark-label={tr.switchToDarkMode}
+  data-light-label={tr.switchToLightMode}
 >
   <svg
     class="theme-icon"
@@ -31,10 +41,14 @@
       const btn = document.getElementById('theme-toggle');
       if (!(btn instanceof HTMLButtonElement) || btn.dataset.themeReady === 'true') return;
       btn.dataset.themeReady = 'true';
+      const darkLabel = btn.dataset.darkLabel || 'Switch to dark mode';
+      const lightLabel = btn.dataset.lightLabel || 'Switch to light mode';
 
       const syncAriaPressed = (dark) => {
         btn.setAttribute('aria-pressed', String(dark));
-        btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+        const label = dark ? lightLabel : darkLabel;
+        btn.setAttribute('aria-label', label);
+        btn.setAttribute('title', label);
       };
 
       syncAriaPressed(root.getAttribute('data-theme') === 'dark');

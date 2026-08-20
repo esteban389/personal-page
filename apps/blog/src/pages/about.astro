@@ -2,30 +2,38 @@
 import '../styles/pages/about.css';
 import config from '../../astro-theme-config';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { localizedPath, otherLocale, type Locale } from '../i18n';
 
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const about = config.about.locales[locale];
+const alternateUrl = localizedPath(otherLocale(locale), '/about/');
 const profileImageUrl = config.about.profileImage.trim();
 const hasProfileImage = profileImageUrl.length > 0;
 const profileName = config.about.name || config.site.author;
-const profileRole = config.about.role;
-const profileLocation = config.about.location;
-const profileFocus = config.about.focus;
-const profileLead = config.about.lead;
-const [headlineFirst, headlineSecond] = config.about.headline;
-const statementLabel = config.about.statementLabel;
-const statementTitle = config.about.statementTitle;
-const statement = config.about.statement;
-const careerLabel = config.about.careerLabel;
-const careerItems = config.about.career;
-const focusItems = config.about.interests;
-const interestsLabel = config.about.interestsLabel;
-const interestsHeading = config.about.interestsHeading;
+const profileRole = about.role;
+const profileLocation = about.location;
+const profileFocus = about.focus;
+const profileLead = about.lead;
+const [headlineFirst, headlineSecond] = about.headline;
+const statementLabel = about.statementLabel;
+const statementTitle = about.statementTitle;
+const statement = about.statement;
+const careerLabel = about.careerLabel;
+const careerItems = about.career;
+const focusItems = about.interests;
+const interestsLabel = about.interestsLabel;
+const interestsHeading = about.interestsHeading;
 const profileLinks = [
   {
     label: 'GitHub',
     href: config.social.github,
   },
   {
-    label: 'Website',
+    label: locale === 'es' ? 'Sitio web' : 'Website',
     href: config.social.website,
   },
   {
@@ -33,13 +41,18 @@ const profileLinks = [
     href: config.social.linkedin,
   },
   {
-    label: 'Email',
+    label: locale === 'es' ? 'Correo' : 'Email',
     href: config.social.email ? `mailto:${config.social.email}` : '',
   },
 ].filter((link) => link.href);
 ---
 
-<BaseLayout title="About" description={profileLead}>
+<BaseLayout
+  title={about.pageTitle}
+  description={profileLead}
+  locale={locale}
+  alternateUrl={alternateUrl}
+>
   <main id="main-content" class="about-main">
     <section class="about-hero" aria-labelledby="about-title">
       <div class="about-intro">
@@ -54,7 +67,7 @@ const profileLinks = [
 
       <aside
         class:list={['profile-panel', !hasProfileImage && 'profile-panel--text']}
-        aria-label="Profile preview"
+        aria-label={about.profileAriaLabel}
       >
         {
           hasProfileImage && (
@@ -63,7 +76,7 @@ const profileLinks = [
                 src={profileImageUrl}
                 width="720"
                 height="720"
-                alt={`${profileName} profile portrait`}
+                alt={about.profileAlt}
                 loading="eager"
                 referrerpolicy="no-referrer"
               />
@@ -76,17 +89,17 @@ const profileLinks = [
         </div>
         <dl class="profile-meta">
           <div>
-            <dt>Location</dt>
+            <dt>{about.metaLabels.location}</dt>
             <dd>{profileLocation}</dd>
           </div>
           <div>
-            <dt>Focus</dt>
+            <dt>{about.metaLabels.focus}</dt>
             <dd>{profileFocus}</dd>
           </div>
           {
             profileLinks.length > 0 && (
               <div>
-                <dt>Links</dt>
+                <dt>{about.metaLabels.links}</dt>
                 <dd class="profile-links">
                   {profileLinks.map((link) => (
                     <a

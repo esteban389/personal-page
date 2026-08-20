@@ -16,16 +16,14 @@ const targetLocale = otherLocale(locale);
 const languageHref = alternateUrl ?? localizedPath(targetLocale, '/');
 const tr = getUiText(locale);
 
-const skipLinkLabel = 'Skip to content';
-const navAriaLabel = 'Primary navigation';
 const headerTitle = config.site.logoLabel || config.site.title;
 const navItems = config.nav;
 ---
 
-<a href="#main-content" class="skip-link" tabindex="0">{skipLinkLabel}</a>
+<a href="#main-content" class="skip-link" tabindex="0">{tr.navigation.skipToContent}</a>
 <header class="site-header glass">
-  <nav class="nav-inner" aria-label={navAriaLabel}>
-    <a href={withBase('/')} class="nav-logo">{headerTitle}</a>
+  <nav class="nav-inner" aria-label={tr.navigation.primaryNavigation}>
+    <a href={withBase(localizedPath(locale, '/'))} class="nav-logo">{headerTitle}</a>
     <div class="nav-right">
       <div class="nav-links">
         {navItems.map((item) => <HeaderLink href={item.href}>{item.label}</HeaderLink>)}
@@ -34,7 +32,7 @@ const navItems = config.nav;
           <span class="sr-only">{tr.navigation.switchLanguage}</span>
         </a>
       </div>
-      <ThemeToggle />
+      <ThemeToggle locale={locale} />
     </div>
   </nav>
 </header>

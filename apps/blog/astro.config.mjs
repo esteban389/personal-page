@@ -12,7 +12,7 @@ import config from './astro-theme-config.ts';
 import { toneExpressiveCodeOptions } from './src/config/expressive-code.ts';
 
 // https://astro.build/config
-const sitemapExcludedPaths = new Set(['/search/', '/es/search/']);
+const sitemapExcludedPaths = new Set(['/search/', '/es/search/', '/es/404/']);
 const configuredSite = process.env.ASTRO_SITE_URL || config.site.url;
 const configuredBaseValue = process.env.ASTRO_SITE_BASE ?? config.site.base;
 const configuredBase = configuredBaseValue === '/' ? '' : configuredBaseValue.replace(/\/$/, '');

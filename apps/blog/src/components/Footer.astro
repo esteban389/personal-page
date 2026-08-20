@@ -20,19 +20,17 @@ const footerLabel = (href: string, fallback: string) => {
   if (href === '/search') return tr.navigation.search;
   return fallback;
 };
-const footerHref = (href: string) =>
-  locale === 'es' && href === '/about' ? href : localizedPath(locale, href);
+const footerHref = (href: string) => localizedPath(locale, href);
 ---
 
 <footer class="site-footer">
   <div class="footer-inner">
     <p class="footer-copy">
-      &copy; {today.getFullYear()}
-      {footerTitle}.
+      &copy; {today.getFullYear()}{' '}{footerTitle}.
     </p>
     {
       footerLinks.length > 0 && (
-        <nav class="footer-links" aria-label="Footer navigation">
+        <nav class="footer-links" aria-label={tr.navigation.footerNavigation}>
           {footerLinks.map((item) => (
             <a
               href={withBase(footerHref(item.href))}

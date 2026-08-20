@@ -2,6 +2,7 @@
 import type { ImageMetadata } from 'astro';
 import config from '../../astro-theme-config';
 import BaseHead from '../components/BaseHead.astro';
+import CloudflareAnalytics from '../components/CloudflareAnalytics.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import SearchPalette from '../components/SearchPalette.astro';
@@ -43,7 +44,7 @@ const localizedSite = getLocaleConfig(activeLocale);
 const alternateLocale = otherLocale(activeLocale);
 const alternateLinks = alternateUrl
   ? [
-      { lang: activeLocale, href: Astro.url.pathname },
+      { lang: activeLocale, href: canonicalUrl ?? Astro.url.pathname },
       { lang: alternateLocale, href: alternateUrl },
     ]
   : [];
@@ -87,5 +88,6 @@ const alternateLinks = alternateUrl
       onReady(mountSkipLinkFocus);
       onReady(mountImageLoadingStates);
     </script>
+    <CloudflareAnalytics />
   </body>
 </html>

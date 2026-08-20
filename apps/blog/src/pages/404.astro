@@ -1,24 +1,53 @@
 ---
 import '../styles/pages/not-found.css';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { localizedPath, otherLocale, type Locale } from '../i18n';
+import { getUiText } from '../ui';
 import { withBase } from '../utils/paths';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const tr = getUiText(locale).notFound;
+const localizedNotFoundPath = (targetLocale: Locale) =>
+  localizedPath(targetLocale, targetLocale === 'en' ? '/404.html' : '/404/');
+const pageUrl = localizedNotFoundPath(locale);
+const alternateUrl = localizedNotFoundPath(otherLocale(locale));
+const spanishPrefix = withBase(localizedPath('es', '/'));
+const spanishNotFoundUrl = withBase(localizedNotFoundPath('es'));
+const shouldRedirectSpanish = locale === 'en';
 ---
 
 <BaseLayout
-  title="Page not found"
-  description="The page you requested does not exist."
+  title={tr.title}
+  description={tr.description}
   robots="noindex, follow"
-  canonicalUrl={withBase('/404.html')}
-  pageUrl={withBase('/404.html')}
+  canonicalUrl={withBase(pageUrl)}
+  pageUrl={withBase(pageUrl)}
+  locale={locale}
+  alternateUrl={alternateUrl}
 >
+  <script is:inline define:vars={{ shouldRedirectSpanish, spanishPrefix, spanishNotFoundUrl }}>
+    if (
+      shouldRedirectSpanish &&
+      window.location.pathname.startsWith(spanishPrefix) &&
+      window.location.pathname !== spanishNotFoundUrl
+    ) {
+      window.location.replace(spanishNotFoundUrl);
+    }
+  </script>
   <main class="not-found-main" id="main-content">
     <div class="not-found-inner">
       <p class="not-found-code">404</p>
-      <h1 class="not-found-title">Page not found</h1>
-      <p class="not-found-desc">The URL may be wrong, or the page may have been removed.</p>
+      <h1 class="not-found-title">{tr.title}</h1>
+      <p class="not-found-desc">{tr.message}</p>
       <div class="not-found-actions">
-        <a href={withBase('/')} class="btn btn-primary">Home</a>
-        <a href={withBase('/posts')} class="btn btn-secondary">All posts</a>
+        <a href={withBase(localizedPath(locale, '/'))} class="btn btn-primary">{tr.home}</a>
+        <a href={withBase(localizedPath(locale, '/posts'))} class="btn btn-secondary">
+          {tr.posts}
+        </a>
       </div>
     </div>
   </main>

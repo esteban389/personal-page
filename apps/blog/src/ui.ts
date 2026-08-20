@@ -35,6 +35,18 @@ const en = {
     about: 'About',
     search: 'Search',
     switchLanguage: 'Leer en español',
+    skipToContent: 'Skip to content',
+    primaryNavigation: 'Primary navigation',
+    footerNavigation: 'Footer navigation',
+    switchToDarkMode: 'Switch to dark mode',
+    switchToLightMode: 'Switch to light mode',
+  },
+  notFound: {
+    title: 'Page not found',
+    description: 'The page you requested does not exist.',
+    message: 'The URL may be wrong, or the page may have been removed.',
+    home: 'Home',
+    posts: 'All posts',
   },
 };
 
@@ -75,6 +87,18 @@ const es = {
     about: 'Acerca de',
     search: 'Buscar',
     switchLanguage: 'Read in English',
+    skipToContent: 'Ir al contenido',
+    primaryNavigation: 'Navegación principal',
+    footerNavigation: 'Navegación del pie de página',
+    switchToDarkMode: 'Cambiar al modo oscuro',
+    switchToLightMode: 'Cambiar al modo claro',
+  },
+  notFound: {
+    title: 'Página no encontrada',
+    description: 'La página solicitada no existe.',
+    message: 'La URL puede ser incorrecta o la página puede haber sido eliminada.',
+    home: 'Inicio',
+    posts: 'Todos los artículos',
   },
 };
 
