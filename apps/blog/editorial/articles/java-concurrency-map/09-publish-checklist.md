@@ -47,3 +47,29 @@ check passed.
 
 - [x] Esteban explicitly authorized changing `draft` to `false`.
 - [x] Esteban explicitly authorized the requested commit and push.
+
+## English syndication
+
+- [x] The canonical blog URL is live and self-referencing.
+- [x] DEV and Medium metadata are configured in the English post frontmatter.
+- [x] Syndication tests and the combined DEV/Medium dry run passed.
+- [x] DEV published the article at
+      <https://dev.to/esteban389/how-javas-concurrency-apis-fit-together-bii>.
+- [x] The live DEV HTML points its canonical link to the English blog post and
+      uses the approved hero image.
+- [x] The supported Medium import command and manual handoff were produced.
+- [ ] Medium import, visual review, and publication remain manual actions for
+      Esteban.
+
+## Spanish edition
+
+- [x] The Spanish translation commission, draft, and independent review are
+      recorded under `translations/es/`.
+- [x] The reviewed translation is prepared in the Astro content collection with
+      `draft: false`.
+- [x] Production validation, reciprocal language links, Spanish Pagefind search,
+      mobile footnotes, locale metadata, and hero metadata passed.
+- [x] Esteban explicitly authorized a scoped commit and push for the syndication
+      metadata and Spanish publication package.
+- The public Spanish route must be verified after the push before completion is
+  reported.
