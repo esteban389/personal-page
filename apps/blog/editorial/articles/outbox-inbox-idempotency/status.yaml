@@ -1,0 +1,19 @@
+schemaVersion: 1
+slug: outbox-inbox-idempotency
+workingTitle: 'What Duplicate Users Taught Me About Outbox and Idempotency'
+language: en
+stage: ingestion
+articleType: 'story-led technical explanation'
+
+approved:
+  brief: false
+  outline: false
+  claims: false
+  draft: false
+  image: false
+  review: false
+
+publish:
+  category: 'Technical Articles'
+  heroImage: null
+  pubDate: null
