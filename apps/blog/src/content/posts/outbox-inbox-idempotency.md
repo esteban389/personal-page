@@ -7,28 +7,25 @@ lang: 'en'
 draft: true
 ---
 
-An operation that writes to two services can begin with an ordinary requirement:
-create one record, then create the related record in another service. The happy path
-is easy to describe. What makes the design harder is everything the network can leave
-unanswered between two local transactions.
+After enough support tickets involving students who couldn't log in, I stopped
+seeing each case as an isolated data problem. Staff operations were failing too,
+and I kept returning to the same boundary between two services.
 
-Transactional outbox, idempotency, and inbox can sound like a lot of architecture
-for such a small flow. Each one answers a narrow question. The outbox preserves the
-work on the sending side. An idempotency key gives repeated attempts the same
-identity. The inbox records what the receiving side already did and what it returned.
-
-I'll trace those responsibilities through a boundary that kept appearing in my
-support work. We'll start with why a direct call looked reasonable, follow the
-failure that makes its result ambiguous, and add each piece only when the earlier
-design needs it.
-
-For this post, I'll call the two services Student and Users. The names are simplified,
+For this post, I'll call those services Student and Users. The names are simplified,
 but the requirement is one we had at work: creating a student in Student also
 required an application-user record in Users.
 
 On paper, the flow was short. Student asked Users to create the user, received a
-`userId`, and then saved the student. One request, one response, one relationship
-between the records. A direct call seemed proportional to the job.
+`userId`, and then saved the student. The difficult part was everything the network
+could leave unanswered between those two local transactions. Student might not
+receive a response even though Users committed its work. Retrying could recover the
+operation, or repeat an effect that had already happened.
+
+Transactional outbox, idempotency, and inbox each address part of that problem. The
+outbox preserves the work Student still needs done. An idempotency key gives
+repeated attempts the same identity. The inbox remembers what Users already did and
+what it returned. I'll add them in that order, starting with why the direct call
+seemed reasonable.
 
 I first worked on this path when I was a junior. We knew that one service's
 transaction did not magically include the other service. The direct call was a
@@ -38,7 +35,7 @@ boundary did not exist.
 Its appeal was easy to see on the happy path. Student called Users, took the returned
 ID, and finished saving the student. The code could read almost like the requirement.
 
-Later, the same boundary kept appearing in support. One student's login reached the
+The support cases made the limit harder to ignore. One student's login reached the
 application-user lookup and failed there. When we inspected the data, we found three
 enabled user records sharing the same document number. Other cases involved students
 who couldn't log in or staff operations that failed because the expected student/user
@@ -49,9 +46,9 @@ usable Users record for the student. When that relationship was missing or
 ambiguous, an operation that looked like a student problem could fail in Users
 instead.
 
-After enough of those tickets, my reaction was not particularly sophisticated: this
-is absurd. I knew I could control the requests to Users better, yet I was still
-spending time repairing the consequences when that boundary went wrong.
+My reaction was not particularly sophisticated: this is absurd. I knew I could
+control the requests to Users better, yet I was still spending time repairing the
+consequences when that boundary went wrong.
 
 I still do not know which historical operation created those three records. A
 repeated request is possible, but other sequences are possible too. I can explain
@@ -87,10 +84,16 @@ A timeout says that the answer did not arrive. It does not say what Users commit
 
 ## The outbox preserves Student's intent
 
-Later outbox work elsewhere in the system changed how I saw this boundary. The
-problem was no longer only that the call could fail. Student's need to create a user
-lived inside that one request, and once the request was gone, Student had no durable
-record it could return to.
+I first reached for an outbox after dealing with notifications that had not been
+delivered. What bothered me was not only that they failed. Once the original
+request was gone, we had little durable state to help us send them again.
+
+While designing that flow, I started looking at other service boundaries where the
+same idea could help. Student and Users was one of them.
+
+Here, the problem was no longer only that the call could fail. Student's need to
+create a user lived inside that one request, and once the request was gone, Student
+had no durable record it could return to.
 
 An outbox gives Student that record. Student saves its own change and a create-user
 intent in the same local transaction. If the transaction commits, both are stored.
@@ -213,6 +216,11 @@ Outbox sender -> Student state: associate userId
 Outbox sender -> Users: repeat create user [same idempotencyKey]
 Users --> Outbox sender: stored userId
 ```
+
+This flow trades immediate agreement for recoverability. Student can commit its
+record and outbox entry before Users creates the user, so the relationship may
+remain incomplete for a while. The outbox does not decide what the application
+should expose during that window; that is a separate product decision.
 
 ## Idempotency does not replace business rules
 
