@@ -2,7 +2,7 @@ schemaVersion: 1
 slug: restyle-es-outbox-inbox-idempotency
 workingTitle: 'Lo que los errores por usuarios duplicados me enseñaron sobre outbox e idempotencia'
 language: es
-stage: publish-ready
+stage: published
 articleType: 'translated story-led technical explanation'
 
 approved:

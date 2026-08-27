@@ -41,3 +41,6 @@
 - [x] Esteban autorizó generar y publicar la traducción con `draft: false`.
 - [x] Esteban aprobó el paquete final y reiteró la publicación después del cambio
       de título.
+- [x] El commit `1eee63b` llegó a `origin/master`.
+- [x] La ruta española está pública con el título final, canonical propio,
+      `og:locale: es_CO`, RSS y enlaces `hreflang` recíprocos con la edición inglesa.
