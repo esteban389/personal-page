@@ -1,0 +1,19 @@
+schemaVersion: 1
+slug: restyle-es-outbox-inbox-idempotency
+workingTitle: 'Lo que los errores por usuarios duplicados me enseñaron sobre outbox e idempotencia'
+language: es
+stage: publish-ready
+articleType: 'translated story-led technical explanation'
+
+approved:
+  brief: true
+  outline: true
+  claims: true
+  draft: true
+  image: true
+  review: true
+
+publish:
+  category: 'Artículos técnicos'
+  heroImage: '../../../assets/posts/outbox-inbox-idempotency/outbox-inbox-handoff.png'
+  pubDate: '2026-08-27T12:00:00-05:00'

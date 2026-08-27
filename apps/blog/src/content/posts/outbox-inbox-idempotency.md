@@ -4,6 +4,7 @@ description: 'A production support incident led me to separate durable work from
 pubDate: '2026-08-27T12:00:00-05:00'
 category: 'Technical Articles'
 lang: 'en'
+translationKey: 'outbox-inbox-idempotency'
 heroImage: '../../assets/posts/outbox-inbox-idempotency/outbox-inbox-handoff.png'
 draft: false
 syndication:
