@@ -1,10 +1,25 @@
 ---
 title: 'What Duplicate Users Taught Me About Outbox and Idempotency'
 description: 'A production support incident led me to separate durable work from duplicate-safe processing with an outbox, an inbox, and idempotency.'
-pubDate: '2026-08-21'
+pubDate: '2026-08-27T12:00:00-05:00'
 category: 'Technical Articles'
 lang: 'en'
-draft: true
+heroImage: '../../assets/posts/outbox-inbox-idempotency/outbox-inbox-handoff.png'
+draft: false
+syndication:
+  dev:
+    tags:
+      - backend
+      - architecture
+      - microservices
+      - beginners
+  medium:
+    topics:
+      - Backend Development
+      - Software Architecture
+      - Distributed Systems
+      - Microservices
+      - Idempotency
 ---
 
 After enough support tickets involving students who couldn't log in, I stopped
