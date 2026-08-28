@@ -157,7 +157,7 @@ const featuredPlaceholderStyle = featuredPlaceholder
               {featured.data.heroImage ? (
                 <Image
                   src={featured.data.heroImage}
-                  alt={featured.data.title}
+                  alt={featured.data.heroImageAlt ?? featured.data.title}
                   class="featured-thumb"
                   widths={[400, 720, 960, 1280]}
                   sizes="(max-width: 600px) calc(100vw - 32px), 360px"

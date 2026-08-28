@@ -53,7 +53,7 @@ const imagePlaceholderStyle = (src: string | undefined) =>
           {post.data.heroImage ? (
             <Image
               src={post.data.heroImage}
-              alt={post.data.title}
+              alt={post.data.heroImageAlt ?? post.data.title}
               class="featured-post-card-img"
               widths={[320, 480, 700, 960, 1280, 1600]}
               sizes={

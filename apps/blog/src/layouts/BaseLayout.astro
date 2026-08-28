@@ -12,6 +12,7 @@ interface Props {
   title: string;
   description: string;
   image?: ImageMetadata;
+  imageAlt?: string;
   ogImageUrl?: string;
   type?: 'website' | 'article';
   pubDate?: string;
@@ -28,6 +29,7 @@ const {
   title,
   description,
   image,
+  imageAlt,
   ogImageUrl,
   type,
   pubDate,
@@ -60,6 +62,7 @@ const alternateLinks = alternateUrl
       title={title}
       description={description}
       image={image}
+      imageAlt={imageAlt}
       ogImageUrl={ogImageUrl}
       type={type}
       pubDate={pubDate}

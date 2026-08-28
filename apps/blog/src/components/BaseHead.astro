@@ -15,6 +15,8 @@ interface Props {
   title: string;
   description: string;
   image?: ImageMetadata;
+  /** Accessible description for the social image. Defaults to the page title. */
+  imageAlt?: string;
   /** Pre-built OG image URL string — overrides image.src when provided */
   ogImageUrl?: string;
   /** 'website' (default) | 'article' */
@@ -41,6 +43,7 @@ const {
   title,
   description,
   image,
+  imageAlt,
   ogImageUrl,
   type = 'website',
   pubDate,
@@ -172,7 +175,7 @@ const websiteJsonLd =
 {ogImageHref && <meta property="og:image" content={ogImageHref} />}
 {ogImageHref && <meta property="og:image:width" content={String(image?.width ?? 1200)} />}
 {ogImageHref && <meta property="og:image:height" content={String(image?.height ?? 630)} />}
-{ogImageHref && <meta property="og:image:alt" content={title} />}
+{ogImageHref && <meta property="og:image:alt" content={imageAlt ?? title} />}
 <meta property="og:locale" content={ogLocale} />
 <meta property="og:site_name" content={siteTitle} />
 {type === 'article' && pubDate && <meta property="article:published_time" content={pubDate} />}
@@ -189,7 +192,7 @@ const websiteJsonLd =
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 {ogImageHref && <meta name="twitter:image" content={ogImageHref} />}
-{ogImageHref && <meta name="twitter:image:alt" content={title} />}
+{ogImageHref && <meta name="twitter:image:alt" content={imageAlt ?? title} />}
 
 <!-- JSON-LD (WebSite schema) -->
 {websiteJsonLd && <script is:inline type="application/ld+json" set:html={websiteJsonLd} />}

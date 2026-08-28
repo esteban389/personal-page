@@ -37,6 +37,8 @@ category: 'Technical Articles'
 
 Set `draft: true` to keep unfinished content out of generated pages, RSS, and
 search. Additional publishing options are defined in `src/content.config.ts`.
+When `heroImage` is present, `heroImageAlt` may provide image-specific alt text;
+existing posts fall back to the post title when it is omitted.
 
 ## Configuration
 
