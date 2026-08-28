@@ -2,7 +2,7 @@
 
 <!-- This is an editorial artifact, not the Astro post. -->
 
-## A 9.48 GB Docker Image Inside an 18–30 Minute Frontend Deploy
+## Why Our Next.js Deployments Took 30 Minutes
 
 Frontend deployments could take anywhere from 18 to 30 minutes. Eventually, I
 started letting changes accumulate so the wait felt more justified.

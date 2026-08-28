@@ -1,5 +1,5 @@
 ---
-title: 'A 9.48 GB Docker Image Inside an 18–30 Minute Frontend Deploy'
+title: 'Why Our Next.js Deployments Took 30 Minutes'
 description: 'How a 9.48 GB Next.js image became part of an 18–30 minute deployment path, why the shared image was optimized without redesigning tenant workflows, and what changed after rollout.'
 pubDate: '2026-08-28T00:00:00-05:00'
 category: 'Technical Articles'
@@ -8,6 +8,17 @@ translationKey: 'shrinking-nextjs-docker-image'
 heroImage: '../../assets/posts/shrinking-nextjs-docker-image/freight-gate-runtime-boundary.webp'
 heroImageAlt: 'A large wooden freight crate is blocked in front of a narrow steel gate while a smaller blue crate sits beyond the same opening.'
 draft: false
+syndication:
+  dev:
+    tags:
+      - nextjs
+      - docker
+      - devops
+  medium:
+    topics:
+      - Next.js
+      - Docker
+      - DevOps
 ---
 
 Frontend deployments could take anywhere from 18 to 30 minutes. Eventually, I

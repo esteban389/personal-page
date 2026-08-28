@@ -1,5 +1,5 @@
 ---
-title: 'Una imagen Docker de 9,48 GB en un despliegue frontend de 18–30 minutos'
+title: 'Por qué nuestros despliegues de Next.js tardaban 30 minutos'
 description: 'Cómo una imagen de Next.js de 9,48 GB pasó a formar parte de un despliegue de 18–30 minutos, por qué decidí optimizar el artefacto compartido sin rediseñar los flujos por tenant y qué cambió después del despliegue.'
 pubDate: '2026-08-28T00:00:00-05:00'
 category: 'Artículos técnicos'

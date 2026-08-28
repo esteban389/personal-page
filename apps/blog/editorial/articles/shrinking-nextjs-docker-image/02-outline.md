@@ -183,7 +183,7 @@ ssh <server> docker load`; backend images completed much sooner under the same
 
 ## Title decision
 
-- Proposed title: “A 9.48 GB Docker Image Inside an 18–30 Minute Frontend Deploy”
+- Final title: “Why Our Next.js Deployments Took 30 Minutes”
 
 ## Alternatives still under consideration
 

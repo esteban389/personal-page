@@ -1,6 +1,6 @@
 schemaVersion: 1
 slug: shrinking-nextjs-docker-image
-workingTitle: 'A 9.48 GB Docker Image Inside an 18–30 Minute Frontend Deploy'
+workingTitle: 'Why Our Next.js Deployments Took 30 Minutes'
 language: en
 stage: publish-ready
 articleType: 'incident-driven technical case study'

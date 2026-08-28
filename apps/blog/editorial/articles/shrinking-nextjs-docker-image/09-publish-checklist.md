@@ -17,7 +17,7 @@ check passed.
 
 ### Proposed frontmatter
 
-- Title: `A 9.48 GB Docker Image Inside an 18–30 Minute Frontend Deploy`
+- Title: `Why Our Next.js Deployments Took 30 Minutes`
 - Description: `How a 9.48 GB Next.js image became part of an 18–30 minute deployment path, why the shared image was optimized without redesigning tenant workflows, and what changed after rollout.`
 - Slug: `shrinking-nextjs-docker-image`
 - Category: `Technical Articles`

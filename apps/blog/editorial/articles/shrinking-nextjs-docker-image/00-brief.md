@@ -2,7 +2,7 @@
 
 ## Working title
 
-A 9.48 GB Docker Image Inside an 18–30 Minute Frontend Deploy
+Why Our Next.js Deployments Took 30 Minutes
 
 ## Target reader
 
