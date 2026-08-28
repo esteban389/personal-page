@@ -1,0 +1,19 @@
+schemaVersion: 1
+slug: shrinking-nextjs-docker-image
+workingTitle: 'A 9.48 GB Docker Image Inside an 18–30 Minute Frontend Deploy'
+language: en
+stage: publish-ready
+articleType: 'incident-driven technical case study'
+
+approved:
+  brief: true
+  outline: true
+  claims: true
+  draft: true
+  image: true
+  review: true
+
+publish:
+  category: 'Technical Articles'
+  heroImage: '../../assets/posts/shrinking-nextjs-docker-image/freight-gate-runtime-boundary.webp'
+  pubDate: '2026-08-28T00:00:00-05:00'
