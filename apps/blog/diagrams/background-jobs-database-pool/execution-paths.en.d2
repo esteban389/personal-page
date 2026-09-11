@@ -1,0 +1,22 @@
+# Conceptual resource map after mitigation; not an executor or queue topology.
+# Evidence: approved article, sections on the two fixes and shared Hikari usage.
+direction: down
+
+jobs: "Background\ncalculations" {
+  style.font-size: 24
+}
+api: "Web\nrequests" {
+  style.font-size: 24
+}
+pool: "Shared Hikari pool\nFinite connections" {
+  style.font-size: 24
+  style.stroke-width: 3
+}
+database: "MySQL" {
+  shape: cylinder
+  style.font-size: 24
+}
+
+jobs -> pool
+api -> pool
+pool -> database

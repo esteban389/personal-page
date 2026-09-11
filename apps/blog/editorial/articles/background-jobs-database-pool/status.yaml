@@ -1,0 +1,19 @@
+schemaVersion: 1
+slug: background-jobs-database-pool
+workingTitle: 'Our Background Jobs Exhausted the Database Pool. Then the API Stopped Working.'
+language: en
+stage: publish-ready
+articleType: 'Incident-driven architectural retrospective'
+
+approved:
+  brief: true
+  outline: true
+  claims: true
+  draft: true
+  image: true
+  review: true
+
+publish:
+  category: 'Technical Articles'
+  heroImage: '../../assets/posts/background-jobs-database-pool/borrowed-keys.png'
+  pubDate: '2026-09-11T12:00:00-05:00'
