@@ -1,0 +1,4 @@
+interface:
+  display_name: "Blog Diagram Opportunities"
+  short_description: "Decide where a post needs a diagram"
+  default_prompt: "Use $blog-diagram-opportunities to identify where diagrams would materially improve this article."

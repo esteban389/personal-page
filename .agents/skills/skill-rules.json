@@ -1,0 +1,40 @@
+{
+  "skills": {
+    "blog-diagram-opportunities": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "description": "Decide whether and where explanatory visuals would improve a blog article.",
+      "promptTriggers": {
+        "keywords": [
+          "diagram opportunities",
+          "does this post need a diagram",
+          "where should I add diagrams",
+          "visualize this article"
+        ],
+        "intentPatterns": [
+          "(review|analyze|inspect).*?(article|post|outline).*?(diagram|explanatory visual)",
+          "(diagram|visual).*?(appropriate|useful|needed|belong)"
+        ]
+      }
+    },
+    "blog-d2-diagram": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "description": "Author and render deterministic D2 diagrams for the Astro blog.",
+      "promptTriggers": {
+        "keywords": [
+          "D2 diagram",
+          "diagram as code",
+          "deterministic diagram",
+          "render diagram"
+        ],
+        "intentPatterns": [
+          "(create|generate|author|render|revise|update).*?(D2|diagram).*?(article|post|blog)",
+          "(architecture|sequence|state|flow).*?diagram.*?(article|post|blog)"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "D2 Blog Diagrams"
+  short_description: "Create deterministic D2 diagrams for posts"
+  default_prompt: "Use $blog-d2-diagram to create a source-controlled D2 diagram for this blog post."
