@@ -72,6 +72,10 @@ questions:
 | How do tasks coordinate?            | `Semaphore`, `CountDownLatch`, `CyclicBarrier`           |
 | How do I divide computation?        | `ForkJoinPool`, parallel streams                         |
 
+![A Java concurrency responsibility map connects the initial problem to APIs for describing work, choosing execution, obtaining results, protecting shared state, coordinating tasks, and dividing computation.](/images/posts/java-concurrency-map/responsibility-map.en.svg)
+_Use the question as the entry point. The API names are destinations on the map,
+not interchangeable answers._
+
 These groups overlap. `CompletableFuture`, for example, represents a result and can
 also arrange dependent execution. Treat the groups as questions for locating a
 problem rather than rigid boxes for classifying every type.
@@ -162,6 +166,10 @@ var orders = executor.submit(this::loadOrders).get();
 The first `get()` may block before the second line can submit `loadOrders`. Keep
 the handles first and the waits after both submissions when the operations are
 independent.
+
+![Two execution timelines compare waiting for the profile before submitting orders with submitting both independent tasks before waiting for either result.](/images/posts/java-concurrency-map/submission-timeline.en.svg)
+_Moving both submissions before either wait creates the opportunity for the two
+remote calls to overlap; the executor still owns the execution policy._
 
 Virtual threads became a final feature in Java 21. They are `Thread` instances
 scheduled by the JDK rather than permanent one-to-one wrappers around operating

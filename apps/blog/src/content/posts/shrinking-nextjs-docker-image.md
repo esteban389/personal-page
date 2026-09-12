@@ -63,6 +63,10 @@ image loading, container replacement, and health checks can all contribute. It
 does establish that this job moved the entire artifact, making its contents part
 of deployment performance.
 
+![The deployment job serializes the complete frontend image, transfers it over SSH, loads it into the remote Docker engine, and then replaces the container.](/images/posts/shrinking-nextjs-docker-image/full-image-transfer.en.svg)
+_Because this path moved the complete image, every unnecessary runtime byte also
+became transfer and load work._
+
 Other pipelines may behave differently. A registry can reuse layers and changes
 the transfer model. The diagnosis here belongs to the inspected full-image
 transfer job, not to every slow Docker deploy.
@@ -151,6 +155,10 @@ Built from the same source, the resulting images landed in the approximate
 350-380 MB range. That is about one twenty-fifth of the original size, or roughly
 96% smaller.
 
+![Before the change, complete node_modules and .next directories crossed into a 9.48 GB runtime image; afterward, only standalone output, static assets, and public files formed a 350–380 MB image.](/images/posts/shrinking-nextjs-docker-image/runtime-copy-boundary.en.svg)
+_The optimization was a boundary change: build-only dependencies and cache output
+stopped crossing into the runtime image._
+
 Size alone was not enough to call the change complete. A narrow copy can omit a
 file resolved at runtime. Changing the runtime user can expose a permission
 mistake. The smaller artifact had to run the application, not merely finish
@@ -186,6 +194,11 @@ scope beyond the problem I was trying to solve.
 The image was shared across those paths, and it was the largest bottleneck we had
 identified. Improving that artifact let us address the common transfer cost
 without first changing the tenant-specific workflows.
+
+![One shared frontend image feeds two tenant-specific deployment workflows; both receive the reduced artifact while retaining their own observed deployment ranges.](/images/posts/shrinking-nextjs-docker-image/shared-artifact-scope.en.svg)
+_The shared artifact was the intervention point. The workflows remained distinct,
+and their before-and-after ranges are operational observations rather than a
+controlled comparison._
 
 After rollout, the workflow that had taken roughly 18-30 minutes came down to
 approximately 5-6 minutes. A second workflow was already faster at roughly 5-10

@@ -1,0 +1,14 @@
+direction: down
+
+request: "Student → Users\ncrear usuario"
+commit: "Users confirma\nel usuario y el userId"
+lost: "Users → Student\nse pierde la respuesta con el userId" {
+  style.stroke-dash: 5
+}
+timeout: "Student observa un timeout\nel resultado es desconocido"
+retry: "Reintentar puede recuperar la operación\no repetir el efecto de crear usuario"
+
+request -> commit: la solicitud llega a Users
+commit -> lost: el commit ya ocurrió
+lost -> timeout: no llega la respuesta
+timeout -> retry: sin una identidad estable de operación

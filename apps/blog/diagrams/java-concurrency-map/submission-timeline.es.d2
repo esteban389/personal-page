@@ -1,0 +1,27 @@
+direction: down
+
+sequential: "Esperar antes del segundo envío" {
+  direction: down
+
+  start: envía perfil
+  first_wait: "profile.get()\nel código espera"
+  second_submit: envía pedidos
+  second_wait: "orders.get()\nel código vuelve a esperar"
+  result: construye el dashboard
+
+  start -> first_wait -> second_submit -> second_wait -> result
+}
+
+overlap: "Enviar ambas tareas y luego esperar" {
+  direction: down
+
+  start: envía perfil
+  second_submit: envía pedidos
+  running: "perfil y pedidos pueden superponerse\nsi el ejecutor lo permite"
+  wait: espera ambos resultados
+  result: construye el dashboard
+
+  start -> second_submit -> running -> wait -> result
+}
+
+sequential -> overlap: mueve ambos envíos antes de cualquier espera

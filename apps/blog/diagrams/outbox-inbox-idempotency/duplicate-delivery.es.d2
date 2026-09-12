@@ -1,0 +1,16 @@
+direction: down
+
+attempt_one: "Entrega 1\ncrear usuario [clave A]"
+transaction: "Transacción de Users\nguarda usuario + clave A + userId"
+unrecorded: "Student no registra el éxito\nel outbox todavía parece pendiente" {
+  style.stroke-dash: 5
+}
+attempt_two: "Entrega 2\ncrear usuario [misma clave A]"
+lookup: "Users encuentra la clave A en el inbox\ndevuelve el userId guardado"
+guarantee: "Dos entregas\nUn solo efecto de crear usuario"
+
+attempt_one -> transaction: primer intento
+transaction -> unrecorded: la respuesta no se registra
+unrecorded -> attempt_two: el emisor reintenta
+attempt_two -> lookup: misma identidad de operación
+lookup -> guarantee: no se crea un segundo usuario

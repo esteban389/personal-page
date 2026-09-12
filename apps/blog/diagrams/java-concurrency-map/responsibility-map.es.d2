@@ -1,0 +1,16 @@
+direction: down
+
+question: Comienza por la responsabilidad
+
+map: {
+  grid-columns: 1
+
+  work: "¿Qué debe ocurrir?\nRunnable / Callable<V>"
+  execution: "¿Dónde y cómo debe ejecutarse?\nThread / ExecutorService / hilos virtuales"
+  results: "¿Cómo fluyen los resultados?\nFuture<V> / CompletableFuture<T>"
+  safety: "¿Qué estado se comparte?\nsynchronized / volatile / Lock / variables atómicas\nConcurrentHashMap / BlockingQueue"
+  coordination: "¿Quién puede continuar?\nSemaphore / CountDownLatch / CyclicBarrier"
+  computation: "¿El cálculo se puede dividir?\nForkJoinPool / streams paralelos"
+}
+
+question -> map: elige el problema antes que la clase

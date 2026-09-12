@@ -1,0 +1,35 @@
+direction: down
+
+before: "Antes: el workspace de compilación se volvió el runtime" {
+  direction: down
+  build_before: Etapa de compilación {
+    direction: down
+    dependencies: "node_modules\n1,78 GB"
+    next: ".next\n6,55 GB"
+    public_before: public
+    manifest_before: package.json
+  }
+  runtime_before: "Imagen de ejecución\n9,48 GB"
+
+  build_before.dependencies -> runtime_before: copia el directorio completo
+  build_before.next -> runtime_before: copia el directorio completo
+  build_before.public_before -> runtime_before: copia
+  build_before.manifest_before -> runtime_before: copia
+}
+
+after: "Después: límite explícito del runtime" {
+  direction: down
+  build_after: Etapa de compilación {
+    direction: down
+    standalone: .next/standalone
+    static: .next/static
+    public_after: public
+  }
+  runtime_after: "Imagen de ejecución\n350–380 MB"
+
+  build_after.standalone -> runtime_after: copia servidor y dependencias de ejecución
+  build_after.static -> runtime_after: copia archivos estáticos
+  build_after.public_after -> runtime_after: copia archivos públicos
+}
+
+before -> after: copia más limitada en la etapa final

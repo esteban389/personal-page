@@ -1,0 +1,20 @@
+direction: down
+
+build: Shared frontend image {
+  before: "Before\n9.48 GB"
+  after: "After\n350–380 MB"
+  before -> after: minimize runtime artifact
+}
+
+workflows: Tenant-specific deployment workflows {
+  grid-columns: 1
+  slow: "Workflow observed at 18–30 min\nAfter rollout: about 5–6 min"
+  faster: "Workflow observed at 5–10 min\nAfter rollout: seconds to about 2 min"
+}
+
+build -> workflows: both receive the same smaller artifact
+
+note: "Operational observations\nnot controlled benchmarks" {
+  style.stroke-dash: 4
+}
+workflows -> note: conditions differed

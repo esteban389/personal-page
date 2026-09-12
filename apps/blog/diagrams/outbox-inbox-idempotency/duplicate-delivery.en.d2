@@ -1,0 +1,16 @@
+direction: down
+
+attempt_one: "Delivery 1\ncreate user [key A]"
+transaction: "Users transaction\nsave user + key A + userId"
+unrecorded: "Student does not record success\noutbox still looks pending" {
+  style.stroke-dash: 5
+}
+attempt_two: "Delivery 2\ncreate user [same key A]"
+lookup: "Users finds key A in the inbox\nreturns the stored userId"
+guarantee: "Two deliveries\nOne create-user effect"
+
+attempt_one -> transaction: first attempt
+transaction -> unrecorded: response is not recorded
+unrecorded -> attempt_two: sender retries
+attempt_two -> lookup: same operation identity
+lookup -> guarantee: no second user is created

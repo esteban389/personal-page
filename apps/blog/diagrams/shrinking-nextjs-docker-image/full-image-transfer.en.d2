@@ -1,0 +1,15 @@
+direction: down
+
+pipeline: Deployment job
+local: Local Docker engine
+stream: Full image stream {
+  label: "docker save | ssh"
+  shape: queue
+}
+remote: Remote Docker engine
+container: Replaced container
+
+pipeline -> local: select frontend image
+local -> stream: serialize every image layer
+stream -> remote: transfer and docker load
+remote -> container: replace and verify

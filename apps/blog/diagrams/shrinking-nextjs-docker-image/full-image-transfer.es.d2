@@ -1,0 +1,15 @@
+direction: down
+
+pipeline: Tarea de despliegue
+local: Motor Docker local
+stream: Flujo de la imagen completa {
+  label: "docker save | ssh"
+  shape: queue
+}
+remote: Motor Docker remoto
+container: Contenedor reemplazado
+
+pipeline -> local: selecciona la imagen frontend
+local -> stream: serializa todas las capas
+stream -> remote: transfiere y ejecuta docker load
+remote -> container: reemplaza y verifica

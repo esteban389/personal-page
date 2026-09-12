@@ -98,6 +98,10 @@ may repeat the effect unless Users can recognize the attempt.[^retries]
 
 A timeout says that the answer did not arrive. It does not say what Users committed.
 
+![A direct call crosses the failure window where Users commits a user but the userId response is lost, leaving Student unable to tell whether a retry would repeat the effect.](/images/posts/outbox-inbox-idempotency/direct-call-failure-window.en.svg)
+_The uncertainty begins after Users commits and the response disappears. A timeout
+reports missing information, not a rollback._
+
 ## The outbox preserves Student's intent
 
 I first reached for an outbox after dealing with notifications that had not been
@@ -257,6 +261,11 @@ Users can recognize the repeat, skip the second user creation, and return the
 
 The delivery still happened more than once. The create-user effect did not. That is
 the scoped guarantee here, rather than literal exactly-once delivery.[^idempotency]
+
+![The outbox sender delivers the same create-user operation twice with key A; Users stores the user and inbox result on the first attempt, then returns the stored userId without creating another user on the retry.](/images/posts/outbox-inbox-idempotency/duplicate-delivery.en.svg)
+_The repeated delivery keeps one operation identity. The inbox turns the second
+attempt into a lookup of the first result, so two deliveries produce one
+create-user effect._
 
 What I wanted from this design was not a magical transaction across two services. I
 wanted each service to know what it owned once the easy request path stopped being

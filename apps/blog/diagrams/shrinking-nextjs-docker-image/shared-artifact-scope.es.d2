@@ -1,0 +1,20 @@
+direction: down
+
+build: Imagen frontend compartida {
+  before: "Antes\n9,48 GB"
+  after: "Después\n350–380 MB"
+  before -> after: reduce el artefacto de ejecución
+}
+
+workflows: Flujos de despliegue por tenant {
+  grid-columns: 1
+  slow: "Flujo observado en 18–30 min\nDespués: aproximadamente 5–6 min"
+  faster: "Flujo observado en 5–10 min\nDespués: de segundos a aproximadamente 2 min"
+}
+
+build -> workflows: ambos reciben el mismo artefacto reducido
+
+note: "Observaciones operativas\nno benchmarks controlados" {
+  style.stroke-dash: 4
+}
+workflows -> note: las condiciones eran distintas

@@ -1,0 +1,35 @@
+direction: down
+
+before: "Before: build workspace became runtime" {
+  direction: down
+  build_before: Build stage {
+    direction: down
+    dependencies: "node_modules\n1.78 GB"
+    next: ".next\n6.55 GB"
+    public_before: public
+    manifest_before: package.json
+  }
+  runtime_before: "Runtime image\n9.48 GB"
+
+  build_before.dependencies -> runtime_before: copy complete directory
+  build_before.next -> runtime_before: copy complete directory
+  build_before.public_before -> runtime_before: copy
+  build_before.manifest_before -> runtime_before: copy
+}
+
+after: "After: explicit runtime boundary" {
+  direction: down
+  build_after: Build stage {
+    direction: down
+    standalone: .next/standalone
+    static: .next/static
+    public_after: public
+  }
+  runtime_after: "Runtime image\n350–380 MB"
+
+  build_after.standalone -> runtime_after: copy runtime server and dependencies
+  build_after.static -> runtime_after: copy static assets
+  build_after.public_after -> runtime_after: copy public files
+}
+
+before -> after: narrower final-stage copy

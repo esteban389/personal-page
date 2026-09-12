@@ -89,6 +89,10 @@ menos que Users pueda reconocer el intento.[^retries]
 Un timeout dice que la respuesta no llegó. No dice si Users alcanzó a hacer commit
 de su transacción.
 
+![Una llamada directa cruza una ventana de fallo donde Users confirma el usuario pero se pierde la respuesta con el userId, por lo que Student no sabe si un reintento repetiría el efecto.](/images/posts/outbox-inbox-idempotency/direct-call-failure-window.es.svg)
+_La incertidumbre comienza después del commit de Users y la pérdida de la respuesta.
+Un timeout informa que falta una respuesta; no demuestra un rollback._
+
 ## El outbox conserva la intención de Student
 
 Pensé por primera vez en usar un outbox después de lidiar con notificaciones que no
@@ -254,6 +258,11 @@ del usuario y devolver el `userId` que guardó la primera vez.
 
 La entrega ocurrió más de una vez. El efecto de crear usuario no. Esa es la garantía
 acotada de este diseño, no una entrega literal `exactly-once`.[^idempotency]
+
+![El emisor del outbox entrega dos veces la misma operación de crear usuario con la clave A; Users guarda el usuario y el resultado del inbox en el primer intento y, durante el reintento, devuelve el userId guardado sin crear otro usuario.](/images/posts/outbox-inbox-idempotency/duplicate-delivery.es.svg)
+_La entrega repetida conserva una sola identidad de operación. El inbox convierte
+el segundo intento en una consulta del primer resultado, por lo que dos entregas
+producen un solo efecto de crear usuario._
 
 Lo que quería de este diseño no era una transacción mágica entre dos servicios.
 Quería que cada servicio supiera qué le correspondía cuando el camino fácil dejara

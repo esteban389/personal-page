@@ -56,6 +56,10 @@ remoto, la carga de la imagen, el reemplazo del contenedor y los health checks
 también pueden contribuir. Sí establece que esta tarea movía el artefacto completo,
 por lo que su contenido formaba parte del rendimiento del despliegue.
 
+![La tarea de despliegue serializa la imagen frontend completa, la transfiere por SSH, la carga en el motor Docker remoto y después reemplaza el contenedor.](/images/posts/shrinking-nextjs-docker-image/full-image-transfer.es.svg)
+_Como esta ruta movía la imagen completa, cada byte innecesario en ejecución también
+se convertía en trabajo de transferencia y carga._
+
 Otros pipelines pueden comportarse de manera distinta. Un registro puede reutilizar
 capas y cambia el modelo de transferencia. Este diagnóstico pertenece a la tarea de
 transferencia completa que inspeccioné, no a todos los despliegues lentos con Docker.
@@ -147,6 +151,10 @@ Construidas desde el mismo código fuente, las imágenes resultantes quedaron en
 rango aproximado de 350–380 MB. El tamaño quedó cerca de una vigesimoquinta parte
 del original, una reducción aproximada del 96 %.
 
+![Antes del cambio, los directorios completos node_modules y .next cruzaban a una imagen de ejecución de 9,48 GB; después, solo la salida standalone, los archivos estáticos y public formaban una imagen de 350–380 MB.](/images/posts/shrinking-nextjs-docker-image/runtime-copy-boundary.es.svg)
+_La optimización cambió el límite: las dependencias de compilación y el caché dejaron
+de cruzar hacia la imagen de ejecución._
+
 El tamaño por sí solo no bastaba para dar el cambio por terminado. Un límite de
 copia estrecho puede omitir un archivo que se resuelve durante la ejecución. Cambiar
 el usuario de ejecución puede revelar un error de permisos. El artefacto más pequeño
@@ -184,6 +192,11 @@ alcance más allá del problema que intentaba resolver.
 La imagen era compartida entre esas rutas y era el mayor cuello de botella que
 habíamos identificado. Mejorar ese artefacto nos permitió abordar el costo común de
 transferencia sin cambiar primero los flujos específicos de cada tenant.
+
+![Una imagen frontend compartida alimenta dos flujos de despliegue por tenant; ambos reciben el artefacto reducido y conservan sus propios rangos de tiempo observados.](/images/posts/shrinking-nextjs-docker-image/shared-artifact-scope.es.svg)
+_El punto de intervención fue el artefacto compartido. Los flujos siguieron siendo
+distintos y sus rangos antes y después son observaciones operativas, no una
+comparación controlada._
 
 Después de desplegar el cambio, el flujo que tardaba aproximadamente 18–30 minutos
 bajó a unos 5–6 minutos. Un segundo flujo ya era más rápido, con tiempos aproximados

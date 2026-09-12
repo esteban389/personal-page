@@ -61,6 +61,10 @@ siete preguntas:
 | ¿Cómo se coordinan las tareas?        | `Semaphore`, `CountDownLatch`, `CyclicBarrier`           |
 | ¿Cómo divido un cálculo?              | `ForkJoinPool`, streams paralelos                        |
 
+![Un mapa de responsabilidades de concurrencia en Java conecta el problema inicial con API para describir trabajo, elegir la ejecución, obtener resultados, proteger estado compartido, coordinar tareas y dividir cálculos.](/images/posts/java-concurrency-map/responsibility-map.es.svg)
+_Usa la pregunta como punto de entrada. Los nombres de las API son destinos dentro
+del mapa, no respuestas intercambiables._
+
 Estos grupos se superponen. `CompletableFuture`, por ejemplo, representa un
 resultado y también puede organizar una ejecución dependiente. Trata los grupos
 como preguntas para ubicar un problema, no como categorías rígidas para
@@ -159,6 +163,11 @@ var orders = executor.submit(this::loadOrders).get();
 El primer `get()` puede bloquear antes de que la segunda línea alcance a enviar
 `loadOrders`. Conserva primero las referencias y espera después de enviar ambas
 tareas cuando las operaciones sean independientes.
+
+![Dos líneas de tiempo comparan esperar el perfil antes de enviar los pedidos con enviar ambas tareas independientes antes de esperar cualquiera de los resultados.](/images/posts/java-concurrency-map/submission-timeline.es.svg)
+_Mover ambos envíos antes de cualquier espera crea la oportunidad para que las dos
+llamadas remotas se superpongan; el ejecutor todavía controla la política de
+ejecución._
 
 Los hilos virtuales se convirtieron en una característica definitiva en Java 21.
 Son instancias de `Thread` que el JDK planifica, en lugar de estar vinculadas

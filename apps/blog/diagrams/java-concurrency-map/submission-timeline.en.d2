@@ -1,0 +1,27 @@
+direction: down
+
+sequential: "Wait before second submission" {
+  direction: down
+
+  start: submit profile
+  first_wait: "profile.get()\ncaller waits"
+  second_submit: submit orders
+  second_wait: "orders.get()\ncaller waits again"
+  result: assemble dashboard
+
+  start -> first_wait -> second_submit -> second_wait -> result
+}
+
+overlap: "Submit both, then wait" {
+  direction: down
+
+  start: submit profile
+  second_submit: submit orders
+  running: "profile and orders may overlap\nwhen the executor permits"
+  wait: wait for both results
+  result: assemble dashboard
+
+  start -> second_submit -> running -> wait -> result
+}
+
+sequential -> overlap: move both submissions before either wait
