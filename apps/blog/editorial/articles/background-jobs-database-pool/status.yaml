@@ -2,7 +2,7 @@ schemaVersion: 1
 slug: background-jobs-database-pool
 workingTitle: 'Our Background Jobs Exhausted the Database Pool. Then the API Stopped Working.'
 language: en
-stage: publish-ready
+stage: published
 articleType: 'Incident-driven architectural retrospective'
 
 approved:

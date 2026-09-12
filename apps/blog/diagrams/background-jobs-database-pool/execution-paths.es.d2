@@ -1,0 +1,21 @@
+# Mapa conceptual de recursos tras la mitigación; misma topología que la versión inglesa.
+direction: down
+
+jobs: "Cálculos en\nsegundo plano" {
+  style.font-size: 24
+}
+api: "Peticiones\nweb" {
+  style.font-size: 24
+}
+pool: "Pool de Hikari compartido\nConexiones limitadas" {
+  style.font-size: 24
+  style.stroke-width: 3
+}
+database: "MySQL" {
+  shape: cylinder
+  style.font-size: 24
+}
+
+jobs -> pool
+api -> pool
+pool -> database

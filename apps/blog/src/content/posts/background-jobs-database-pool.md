@@ -8,6 +8,11 @@ translationKey: 'background-jobs-database-pool'
 heroImage: '../../assets/posts/background-jobs-database-pool/borrowed-keys.png'
 heroImageAlt: 'Brass keys rest on stacked blue folders beneath an empty key rack, beside a separate cream folder.'
 draft: false
+syndication:
+  dev:
+    tags: [java, springboot, database, concurrency]
+  medium:
+    topics: [Java, Spring Boot, Databases, Software Architecture]
 ---
 
 Teachers were entering grades, but the averages were taking too long to update. Some clicked the button to calculate them again. Then other parts of the app started failing.
@@ -83,7 +88,7 @@ The report executor now had limits on both its worker threads and its waiting ta
 
 Those persistent jobs already had useful behavior that stayed in place. Asking for the same active section calculation returned the existing job. Repeated grade changes were combined into note-level jobs. If a grade changed while its job was running, that job was marked for another pass afterward. These weren't new features from the emergency fixes.
 
-![Recalculation work and web requests both borrow connections from one shared Hikari pool to reach MySQL.](/images/posts/background-jobs-database-pool/execution-paths.en.svg)
+![Recalculation work and web requests both borrow connections from one shared Hikari pool to reach MySQL.](https://blog.estebanmurcia.dev/images/posts/background-jobs-database-pool/execution-paths.en.svg)
 
 _Different execution paths, the same pool. Limiting background work helps leave connections available for teachers using the app._
 
