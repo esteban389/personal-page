@@ -86,7 +86,10 @@ const featuredPlaceholderStyle = featuredPlaceholder
         <span class="hero-title-line">{tr.heroTitle}</span>
         {
           tr.heroTitleLine2 && (
-            <span class="hero-title-line hero-title-line--accent">{tr.heroTitleLine2}</span>
+            <>
+              {' '}
+              <span class="hero-title-line hero-title-line--accent">{tr.heroTitleLine2}</span>
+            </>
           )
         }
       </h1>
