@@ -1,6 +1,7 @@
 ---
 import 'toc-rail/style.css';
 import '../styles/layouts/post.css';
+import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import Comments from '../components/Comments.astro';
 import FeaturedPostGrid from '../components/FeaturedPostGrid.astro';
@@ -108,6 +109,23 @@ const jsonLd = serializeScriptJson({
       </header>
 
       <div class="post-divider"></div>
+
+      {
+        heroImage && (
+          <figure class="post-cover">
+            <Image
+              src={heroImage}
+              alt={heroImageAlt ?? title}
+              class="post-cover-image"
+              widths={[480, 784, 1176, 1568]}
+              sizes="(max-width: 832px) calc(100vw - 32px), 784px"
+              quality={90}
+              loading="eager"
+              fetchpriority="high"
+            />
+          </figure>
+        )
+      }
 
       <div class="prose" id="prose-content">
         <slot />

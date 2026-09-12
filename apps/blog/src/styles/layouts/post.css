@@ -9,6 +9,7 @@
 .back-link,
 .post-header,
 .post-divider,
+.post-cover,
 .prose {
   max-width: var(--max-width-content);
 }
@@ -92,6 +93,18 @@
   height: 1px;
   background: var(--separator);
   margin: var(--space-6) 0 var(--space-10);
+}
+
+/* ── Cover image ───────────────────────── */
+.post-cover {
+  margin: 0 0 var(--space-10);
+}
+
+.post-cover-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-xl);
 }
 
 /* ── Related posts ──────────────────────── */
